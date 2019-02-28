@@ -25,13 +25,23 @@
     "@adonisjs/ignitor": "^2.0.8",
     "@adonisjs/lucid": "^6.1.3",
     "@adonisjs/lucid-slugify": "^1.0.3",
+    "@adonisjs/mail": "^3.0.9",
+    "@adonisjs/validator": "^5.0.6",
     "adonis-acl": "^1.1.1",
     "axios": "^0.18.0",
     "change-case": "^3.1.0",
+    "laravel-mix": "^4.0.14",
     "mysql": "^2.16.0",
     "randomstring": "^1.1.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "vue": "^2.6.7",
+    "vue-markdown": "^2.2.4",
+    "vue-template-compiler": "^2.6.7",
+    "vuetify": "^1.5.4"
+  },
   "autoload": {
     "App": "./app"
   }

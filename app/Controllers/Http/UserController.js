@@ -2,195 +2,192 @@
 
 const User = use("App/Models/User");
 const Role = use("App/Models/Role");
-const { RedisHelper, ResponseParser } = use("App/Helpers");
-const randomstring = require("randomstring");
-const Env = use("Env");
+const { ResponseParser, ErrorLog } = use("App/Helpers");
 const { ActivityTraits } = use("App/Traits");
-const mongodb = require("mongodb");
-
-const fillable = ["provider", "is_active", "role_id"];
+const randomstring = require("randomstring");
 
 class UserController {
+  /**
+   * Index
+   * Get List of Users
+   */
   async index({ request, response }) {
-    let {
-      page,
-      limit,
-      search,
-      search_by,
-      search_query,
-      between_date,
-      start_date,
-      end_date,
-      sort_by,
-      sort_mode
-    } = request.get();
+    try {
+      let {
+        page,
+        limit,
+        search,
+        search_by,
+        search_query,
+        between_date,
+        start_date,
+        end_date,
+        sort_by,
+        sort_mode
+      } = request.get();
 
-    if (!page) page = 1;
-    if (!limit) limit = 10;
-    if (!sort_by) sort_by = "id";
-    if (!sort_mode) sort_mode = "desc";
+      if (!page) page = 1;
+      if (!limit) limit = 10;
+      if (!sort_by) sort_by = "id";
+      if (!sort_mode) sort_mode = "desc";
 
-    if (search && search != "") {
-      const data = await User.with("role")
-        .where({
-          $or: [
-            { client: { $regex: search, $options: "i" } },
-            { client_key: { $regex: search, $options: "i" } }
-          ]
+      const data = await User.query()
+        .with("roles")
+        .where(function() {
+          if (search && search != "") {
+            this.where("username", "like", `%${search}%`);
+            this.orWhere("client", "like", `%${search}%`);
+          }
+
+          if (search_by && search_query) {
+            this.where(search_by, search_query);
+          }
+
+          if (between_date && start_date && end_date) {
+            this.whereBetween(between_date, [start_date, end_date]);
+          }
         })
-        .paginate(parseInt(page), parseInt(limit));
+        .orderBy(sort_by, sort_mode)
+        .paginate(page, limit);
+
       let parsed = ResponseParser.apiCollection(data.toJSON());
+
       return response.status(200).send(parsed);
+    } catch (e) {
+      ErrorLog(request, e);
+      return response.status(500).send(ResponseParser.unknownError());
     }
-
-    const redisKey = `User_${page}${limit}${sort_by}${sort_mode}${search_by}${search_query}${between_date}${start_date}${end_date}`;
-
-    let cached = await RedisHelper.get(redisKey);
-
-    if (cached) {
-      return response.status(200).send(cached);
-    }
-
-    const data = await User.query()
-      .with("role")
-      .where(function() {
-        if (search_by && search_query) {
-          return this.where({ search_by: { $regex: search, $options: "i" } });
-        }
-      })
-      .where(function() {
-        if (between_date && start_date && end_date) {
-          return this.whereBetween(between_date, [start_date, end_date]);
-        }
-      })
-      .orderBy(sort_by, sort_mode)
-      .paginate(parseInt(page), parseInt(limit));
-
-    let parsed = ResponseParser.apiCollection(data.toJSON());
-    await RedisHelper.set(redisKey, parsed);
-    return response.status(200).send(parsed);
   }
+
+  /**
+   * Store
+   * Create New User
+   */
 
   async store({ request, response, auth }) {
-    let { provider } = request.post();
-    const provider_key = randomstring.generate({
-      length: 12,
-      charset: "alphanumeric"
-    });
-
-    // Get Role
-    let role_id;
-    const clientRole = await Role.findBy("slug", "client");
-    if (clientRole) {
-      role_id = clientRole._id;
-    }
-    const secret = randomstring.generate({ length: 40, charset: "hex" });
-    const username = provider_key + secret;
-    const password = provider_key + Env.get("APP_KEY") + secret;
-    const data = await User.create({
-      provider,
-      provider_key,
-      secret,
-      username,
-      password,
-      is_active: true,
-      role_id
-    });
-    await RedisHelper.delete("Users_*");
-    const activity = `Add new Provider '${data.provider}'`;
-    await ActivityTraits.saveActivity(request, auth, activity);
-    let parsed = ResponseParser.apiCreated(data.toJSON());
-    return response.status(201).send(parsed);
-  }
-
-  /**
-   * Display a single User.
-   * GET User/:id
-   */
-  async show({ request, response }) {
-    const id = request.params.id;
-    let redisKey = `User_${id}`;
-    let cached = await RedisHelper.get(redisKey);
-    if (cached) {
-      return response.status(200).send(cached);
-    }
-    const data = await User.find(id);
-    await data.load("role");
-    if (!data) {
-      return response.status(400).send(ResponseParser.apiNotFound());
-    }
-    let parsed = ResponseParser.apiItem(data.toJSON());
-    await RedisHelper.set(redisKey, parsed);
-    return response.status(200).send(parsed);
-  }
-
-  /**
-   * Update User details.
-   * PUT or PATCH User/:id
-   */
-  async update({ auth, request, response }) {
     try {
-      let body = request.only(fillable);
-      if (body.role_id) {
-        await this.validateRoleId(body.role_id);
-      }
+      const { username, client, role_id, password } = request.post();
+      const client_key = randomstring.generate({
+        length: 12,
+        charset: "alphabetic"
+      });
+      const secret = randomstring.generate({
+        length: 40,
+        charset: "hex"
+      });
+      const data = await User.create({
+        username,
+        client,
+        client_key,
+        secret,
+        password
+      });
+      await this.attachRoles(data, [role_id]);
+      await data.load("roles");
+
+      const activity = `Add new User '${data.client}'`;
+      await ActivityTraits.saveActivity(request, auth, activity);
+      let parsed = ResponseParser.apiCreated(data.toJSON());
+      return response.status(201).send(parsed);
+    } catch (e) {
+      ErrorLog(request, e);
+      return response.status(500).send(ResponseParser.unknownError());
+    }
+  }
+
+  /**
+   * Show
+   * Get User by ID
+   */
+
+  async show({ request, response }) {
+    try {
       const id = request.params.id;
       const data = await User.find(id);
-      if (!data || data.length === 0) {
+      if (!data) {
         return response.status(400).send(ResponseParser.apiNotFound());
       }
-      await data.merge(body);
+      await data.load("roles");
+      let parsed = ResponseParser.apiItem(data.toJSON());
+      return response.status(200).send(parsed);
+    } catch (e) {
+      ErrorLog(request, e);
+      return response.status(500).send(ResponseParser.unknownError());
+    }
+  }
+
+  /**
+   * Update
+   * Update User data by ID
+   */
+
+  async update({ request, response, auth }) {
+    try {
+      const id = request.params.id;
+      const data = await User.find(id);
+      if (!data) {
+        return response.status(400).send(ResponseParser.apiNotFound());
+      }
+      const { username, client, role_id, is_active } = request.post();
+      data.merge({
+        username,
+        client,
+        is_active
+      });
       await data.save();
-      await data.load("role");
-      const activity = `Update Provider '${data.provider}'`;
+      await this.attachRoles(data, [role_id]);
+      await data.load("roles");
+      const activity = `Update user '${data.client}'`;
       await ActivityTraits.saveActivity(request, auth, activity);
-      await RedisHelper.delete("User_*");
       let parsed = ResponseParser.apiUpdated(data.toJSON());
       return response.status(200).send(parsed);
     } catch (e) {
-      console.log("e", e); //eslint-disable-line
-      return response
-        .status(400)
-        .send(ResponseParser.errorResponse("Update failed"));
+      console.log("e", e);
+      ErrorLog(request, e);
+      return response.status(500).send(ResponseParser.unknownError());
     }
   }
 
   /**
-   * Delete a User with id.
-   * DELETE User/:id
+   * Delete
+   * Delete User data by ID
    */
-  async destroy({ auth, request, response }) {
-    const id = request.params.id;
-    const data = await User.find(id);
-    if (!data) {
-      return response.status(400).send(ResponseParser.apiNotFound());
-    }
-    const activity = `Delete Provider '${data.provider}'`;
-    await ActivityTraits.saveActivity(request, auth, activity);
-    await RedisHelper.delete("User*");
-    await data.tokens().delete();
-    await data.delete();
-    return response.status(200).send(ResponseParser.apiDeleted());
-  }
 
-  async me({ auth, response }) {
-    let user = await auth.getUser();
-    return response.status(200).send(ResponseParser.apiItem(user.toJSON()));
+  async destroy({ request, response, auth }) {
+    try {
+      const id = request.params.id;
+      const data = await User.find(id);
+      if (!data) {
+        return response.status(400).send(ResponseParser.apiNotFound());
+      }
+
+      const activity = `Delete User '${data.name}'`;
+      await ActivityTraits.saveActivity(request, auth, activity);
+      // Delete Relationship
+      await data.tokens().delete();
+      await data.roles().detach();
+      await data.activities().delete();
+      // Delete Data
+      await data.delete();
+      return response.status(200).send(ResponseParser.apiDeleted());
+    } catch (e) {
+      console.log("e", e);
+      ErrorLog(request, e);
+      return response.status(500).send(ResponseParser.unknownError());
+    }
   }
 
   /**
-   * Validate Role Id
+   * Attach Users to User
    */
 
-  async validateRoleId(id) {
-    if (!mongodb.ObjectID.isValid(id)) {
-      throw "Invalid mongo id";
+  async attachRoles(user, roles) {
+    let confirmedRoles = [];
+    for (let i = 0; i < roles.length; i++) {
+      let data = await Role.find(roles[i]);
+      if (data) confirmedRoles.push(data.id);
     }
-
-    const role = await Role.find(id);
-    if (!role) {
-      throw "Role not found";
-    }
+    await user.roles().sync(confirmedRoles);
   }
 }
 

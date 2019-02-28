@@ -41,6 +41,14 @@ class User extends Model {
       "@provider:Adonis/Acl/HasPermission"
     ];
   }
+
+  static get hidden() {
+    return ["password"];
+  }
+
+  activities() {
+    return this.hasMany("App/Models/Activity");
+  }
 }
 
 module.exports = User;

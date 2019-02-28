@@ -1,82 +1,81 @@
-'use strict'
+"use strict";
 
 class ResponseParser {
-
   apiCollection(items) {
     const output = {
       meta: {
         status: 200,
-        message: 'Data retrieval successfully',
+        message: "Data retrieval successfully",
         total: items.total,
         perPage: items.perPage,
         page: items.page,
-        lastPage: items.lastPage,
+        lastPage: items.lastPage
       },
       data: items.data
-    }
-    return output
+    };
+    return output;
   }
 
   apiCreated(data) {
     const output = {
       meta: {
         status: 201,
-        message: 'Created successfully',
+        message: "Created successfully"
       },
       data
-    }
-    return output
+    };
+    return output;
   }
 
   apiUpdated(data) {
     const output = {
       meta: {
         status: 200,
-        message: 'Updated successfully',
+        message: "Updated successfully"
       },
       data
-    }
-    return output
+    };
+    return output;
   }
 
   apiDeleted() {
     const output = {
       meta: {
         status: 200,
-        message: 'Deleted successfully'
-      },
-    }
-    return output
+        message: "Deleted successfully"
+      }
+    };
+    return output;
   }
 
   apiItem(data) {
     const output = {
       meta: {
         status: 200,
-        message: 'Data retrieval successfully',
+        message: "Data retrieval successfully"
       },
       data
-    }
-    return output
+    };
+    return output;
   }
 
   apiNotFound() {
     const meta = {
       status: 400,
-      message: 'Data not found',
-    }
-    return { meta }
+      message: "Data not found"
+    };
+    return { meta };
   }
 
   apiValidationFailed(data) {
     const output = {
       meta: {
         status: 422,
-        message: 'Validation failed',
+        message: "Validation failed"
       },
       details: data
-    }
-    return output
+    };
+    return output;
   }
 
   /**
@@ -89,7 +88,7 @@ class ResponseParser {
         status: 400,
         message: msg
       }
-    }
+    };
   }
 
   /**
@@ -100,9 +99,9 @@ class ResponseParser {
     return {
       meta: {
         status: 401,
-        message: 'Unathorized'
+        message: "Unathorized"
       }
-    }
+    };
   }
 
   /**
@@ -116,7 +115,7 @@ class ResponseParser {
         message: msg
       },
       data
-    }
+    };
   }
 
   /**
@@ -127,10 +126,23 @@ class ResponseParser {
     return {
       meta: {
         status: 403,
-        message: 'Forbidden'
+        message: "Forbidden"
       }
-    }
+    };
+  }
+
+  /**
+   * Unknown Error Response
+   */
+
+  unknownError() {
+    return {
+      meta: {
+        status: 500,
+        message: "unknownError"
+      }
+    };
   }
 }
 
-module.exports = new ResponseParser()
+module.exports = new ResponseParser();

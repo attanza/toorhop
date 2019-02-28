@@ -5,10 +5,8 @@ const User = use("App/Models/User");
 const randomstring = require("randomstring");
 class UserSeeder {
   async run() {
-    await Database.raw("SET FOREIGN_KEY_CHECKS=0;");
     await Database.table("users").truncate();
     await Database.table("tokens").truncate();
-    await Database.raw("SET FOREIGN_KEY_CHECKS=1;");
 
     await User.create({
       username: "administrator",

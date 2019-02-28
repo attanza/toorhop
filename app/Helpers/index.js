@@ -1,15 +1,11 @@
-const ResponseParser = require('./ResponseParser')
-const RedisHelper = require('./RedisHelper')
-const AesUtil = require('./AesUtil')
-const validateArrayOfObjectId = require('./validateArrayOfObjectId')
-const VoucherValidate = require('./VoucherValidate')
-const ValidateVoucherId = require('./ValidateVoucherId')
+const ResponseParser = require("./ResponseParser");
+const AesUtil = require("./AesUtil");
+const ErrorLog = require("./ErrorLog");
+const MailHelper = require("./MailHelper");
 
 module.exports = {
   ResponseParser,
-  RedisHelper,
   AesUtil,
-  validateArrayOfObjectId,
-  VoucherValidate,
-  ValidateVoucherId,
-}
+  ErrorLog,
+  MailHelper
+};

@@ -1,21 +1,39 @@
-'use strict'
+"use strict";
 
-/*
-|--------------------------------------------------------------------------
-| Routes
-|--------------------------------------------------------------------------
-|
-| Http routes are entry points to your web application. You can create
-| routes for different URLs and bind Controller actions to them.
-|
-| A complete guide on routing is available here.
-| http://adonisjs.com/docs/4.0/routing
-|
-*/
+const Route = use("Route");
 
-/** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
-const Route = use('Route')
+Route.get("/", () => {
+  return { greeting: "Hello world in JSON" };
+});
 
-Route.get('/', () => {
-  return { greeting: 'Hello world in JSON' }
+Route.group(() => {
+  Route.post("login", "AuthController.login");
 })
+  .prefix("api/v1")
+  .formats(["json"]);
+
+Route.group(() => {
+  /**
+   * Users
+   */
+
+  Route.resource("users", "UserController")
+    .apiOnly()
+    .validator(
+      new Map([
+        [["users.store"], ["StoreUser"]],
+        [["users.update"], ["UpdateUser"]]
+      ])
+    )
+    .middleware(
+      new Map([
+        [["users.index"], ["can:read-user"]],
+        [["users.store"], ["can:create-user"]],
+        [["users.update"], ["can:update-user"]],
+        [["users.destroy"], ["can:delete-user"]]
+      ])
+    );
+})
+  .prefix("api/v1")
+  .formats(["json"])
+  .middleware(["auth:jwt"]);
