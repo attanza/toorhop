@@ -1,0 +1,552 @@
+{
+  "info": {
+    "_postman_id": "9fbb0a50-932f-4cd4-b4f7-bb0532208b1a",
+    "name": "Toorhop",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "75f5218c-35ca-404a-9833-bbe44fc495b4",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "let resp = pm.response.json();",
+                  "",
+                  "pm.environment.set(\"token\", resp.data.token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"administrator\",\n  \"password\": \"password\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["login"]
+            }
+          },
+          "response": [
+            {
+              "name": "Login",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"administrator\",\n  \"password\": \"password\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/login",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["login"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "315"
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 28 Feb 2019 14:38:34 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"status\": 200,\n        \"message\": \"Login Succeed\"\n    },\n    \"data\": {\n        \"type\": \"bearer\",\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTU1MTM2NDcxNH0.LKHjTSTENHPP9H868KFJ6qsh2rvwpoHA_cPhHgM_fhU\",\n        \"refreshToken\": \"f3e3bcfba1d130f35a44f2e8950f099e5/5Ts70/DB/3LZn71Zs0ks1E2bLLlcc6YkW8TrvFMgtPiCSOsrrdcVjjUIkCp758\"\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "List",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "cbb471cb-dc95-4154-bdd7-27d1d8eb91af",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            }
+          },
+          "response": [
+            {
+              "name": "List",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/users",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["users"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "917"
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 28 Feb 2019 16:02:21 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"status\": 200,\n        \"message\": \"Data retrieval successfully\",\n        \"total\": 2,\n        \"perPage\": 10,\n        \"page\": 1,\n        \"lastPage\": 1\n    },\n    \"data\": [\n        {\n            \"id\": 2,\n            \"username\": \"toorhop\",\n            \"client\": \"Toorhop\",\n            \"client_key\": \"WTKjBedJGPRT\",\n            \"secret\": \"81b385989c1fb30ed3e5b5165d27e84cc4092e98\",\n            \"is_active\": 1,\n            \"created_at\": \"2019-02-28 22:46:13\",\n            \"updated_at\": \"2019-02-28 22:46:13\",\n            \"roles\": [\n                {\n                    \"id\": 2,\n                    \"slug\": \"client\",\n                    \"name\": \"Client\",\n                    \"description\": null,\n                    \"created_at\": \"2019-02-28 22:46:13\",\n                    \"updated_at\": \"2019-02-28 22:46:13\",\n                    \"pivot\": {\n                        \"role_id\": 2,\n                        \"user_id\": 2\n                    }\n                }\n            ]\n        },\n        {\n            \"id\": 1,\n            \"username\": \"administrator\",\n            \"client\": \"Administrator\",\n            \"client_key\": \"IXwSyQAodKbg\",\n            \"secret\": \"b4cfb2af5585de3cbde5d39c500c60836fc94d40\",\n            \"is_active\": 1,\n            \"created_at\": \"2019-02-28 22:46:13\",\n            \"updated_at\": \"2019-02-28 22:46:13\",\n            \"roles\": [\n                {\n                    \"id\": 1,\n                    \"slug\": \"administrator\",\n                    \"name\": \"Administrator\",\n                    \"description\": null,\n                    \"created_at\": \"2019-02-28 22:46:13\",\n                    \"updated_at\": \"2019-02-28 22:46:13\",\n                    \"pivot\": {\n                        \"role_id\": 1,\n                        \"user_id\": 1\n                    }\n                }\n            ]\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Store",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "faa06f86-9d77-4748-8087-c9bcb8752b15",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "let resp = pm.response.json();",
+                  "",
+                  "pm.environment.set(\"resourceId\", resp.data.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"username\": \"attanza\",\n\t\"client\": \"Attanza\",\n\t\"password\": \"password\",\n\t\"role_id\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            }
+          },
+          "response": [
+            {
+              "name": "Store",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"username\": \"attanza\",\n\t\"client\": \"Attanza\",\n\t\"password\": \"password\",\n\t\"role_id\": 2\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/users",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["users"]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "436"
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 28 Feb 2019 16:33:06 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"status\": 201,\n        \"message\": \"Created successfully\"\n    },\n    \"data\": {\n        \"username\": \"attanza\",\n        \"client\": \"Attanza\",\n        \"client_key\": \"vZOhKZQhFnah\",\n        \"secret\": \"2bc9318702322a77dee7c883c1ffff4359769169\",\n        \"created_at\": \"2019-02-28 23:33:06\",\n        \"updated_at\": \"2019-02-28 23:33:06\",\n        \"id\": 7,\n        \"roles\": [\n            {\n                \"id\": 2,\n                \"slug\": \"client\",\n                \"name\": \"Client\",\n                \"description\": null,\n                \"created_at\": \"2019-02-28 22:46:13\",\n                \"updated_at\": \"2019-02-28 22:46:13\",\n                \"pivot\": {\n                    \"role_id\": 2,\n                    \"user_id\": 7\n                }\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Show",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "cbb471cb-dc95-4154-bdd7-27d1d8eb91af",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/{{resourceId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{resourceId}}"]
+            }
+          },
+          "response": [
+            {
+              "name": "Show",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/users/{{resourceId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["users", "{{resourceId}}"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "457"
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 28 Feb 2019 16:33:54 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"status\": 200,\n        \"message\": \"Data retrieval successfully\"\n    },\n    \"data\": {\n        \"id\": 7,\n        \"username\": \"attanza\",\n        \"client\": \"Attanza\",\n        \"client_key\": \"vZOhKZQhFnah\",\n        \"secret\": \"2bc9318702322a77dee7c883c1ffff4359769169\",\n        \"is_active\": 0,\n        \"created_at\": \"2019-02-28 23:33:06\",\n        \"updated_at\": \"2019-02-28 23:33:06\",\n        \"roles\": [\n            {\n                \"id\": 2,\n                \"slug\": \"client\",\n                \"name\": \"Client\",\n                \"description\": null,\n                \"created_at\": \"2019-02-28 22:46:13\",\n                \"updated_at\": \"2019-02-28 22:46:13\",\n                \"pivot\": {\n                    \"role_id\": 2,\n                    \"user_id\": 7\n                }\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "faa06f86-9d77-4748-8087-c9bcb8752b15",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"username\": \"attanza2\",\n\t\"client\": \"Attanza\",\n\t\"password\": \"password\",\n\t\"role_id\": 2,\n\t\"is_active\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/{{resourceId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{resourceId}}"]
+            }
+          },
+          "response": [
+            {
+              "name": "Update",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "name": "Content-Type",
+                    "type": "text",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"username\": \"attanza2\",\n\t\"client\": \"Attanza\",\n\t\"password\": \"password\",\n\t\"role_id\": 2,\n\t\"is_active\": 1\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/users/{{resourceId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["users", "{{resourceId}}"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "451"
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 28 Feb 2019 16:42:59 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"status\": 200,\n        \"message\": \"Updated successfully\"\n    },\n    \"data\": {\n        \"id\": 7,\n        \"username\": \"attanza2\",\n        \"client\": \"Attanza\",\n        \"client_key\": \"vZOhKZQhFnah\",\n        \"secret\": \"2bc9318702322a77dee7c883c1ffff4359769169\",\n        \"is_active\": 1,\n        \"created_at\": \"2019-02-28 23:33:06\",\n        \"updated_at\": \"2019-02-28 23:42:59\",\n        \"roles\": [\n            {\n                \"id\": 2,\n                \"slug\": \"client\",\n                \"name\": \"Client\",\n                \"description\": null,\n                \"created_at\": \"2019-02-28 22:46:13\",\n                \"updated_at\": \"2019-02-28 22:46:13\",\n                \"pivot\": {\n                    \"role_id\": 2,\n                    \"user_id\": 7\n                }\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "cbb471cb-dc95-4154-bdd7-27d1d8eb91af",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/{{resourceId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{resourceId}}"]
+            }
+          },
+          "response": [
+            {
+              "name": "Delete",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/users/{{resourceId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["users", "{{resourceId}}"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "56"
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 28 Feb 2019 16:48:03 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"status\": 200,\n        \"message\": \"Deleted successfully\"\n    }\n}"
+            }
+          ]
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{token}}",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "7502955f-bd5a-4af1-9659-828862533af6",
+            "type": "text/javascript",
+            "exec": [""]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "91a21b10-9d9c-4448-954e-06229271898d",
+            "type": "text/javascript",
+            "exec": [""]
+          }
+        }
+      ]
+    }
+  ]
+}

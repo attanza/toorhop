@@ -6,6 +6,8 @@ Route.get("/", () => {
   return { greeting: "Hello world in JSON" };
 });
 
+Route.get("/docs", "DocumentController.index");
+
 Route.group(() => {
   Route.post("login", "AuthController.login");
 })
