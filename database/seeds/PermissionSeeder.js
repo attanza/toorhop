@@ -1,21 +1,25 @@
-'use strict'
+"use strict";
 
-/*
-|--------------------------------------------------------------------------
-| PermissionSeeder
-|--------------------------------------------------------------------------
-|
-| Make use of the Factory instance to seed database with dummy data or
-| make use of Lucid models directly.
-|
-*/
-
-/** @type {import('@adonisjs/lucid/src/Factory')} */
-const Factory = use('Factory')
+const changeCase = require("change-case");
+const Permission = use("App/Models/Permission");
+const resources = ["User"];
+const actions = ["create", "read", "update", "delete"];
+const Database = use("Database");
 
 class PermissionSeeder {
-  async run () {
+  async run() {
+    await Database.raw("SET FOREIGN_KEY_CHECKS=0;");
+    await Permission.truncate();
+    await Database.raw("SET FOREIGN_KEY_CHECKS=1;");
+    for (let i = 0; i < resources.length; i++) {
+      for (let j = 0; j < actions.length; j++) {
+        let body = {
+          name: changeCase.sentenceCase(actions[j] + " " + resources[i])
+        };
+        await Permission.create(body);
+      }
+    }
   }
 }
 
-module.exports = PermissionSeeder
+module.exports = PermissionSeeder;

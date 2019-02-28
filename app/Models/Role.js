@@ -14,6 +14,10 @@ class Role extends Model {
       strategy: "dbIncrement"
     });
   }
+
+  static get traits() {
+    return ["@provider:Adonis/Acl/HasPermission"];
+  }
 }
 
 module.exports = Role;
