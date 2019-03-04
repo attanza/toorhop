@@ -7,7 +7,7 @@
       fixed
       app
     >
-      <v-toolbar color="grey lighten-4" class="elevation-0">
+      <v-toolbar color="grey lighten-4">
         <v-list>
           <v-list-tile>
             <!-- <img src="/img/logo.png" alt="" width="80%"> -->

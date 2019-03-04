@@ -24704,7 +24704,6 @@ var render = function() {
         [
           _c(
             "v-expansion-panel",
-            { staticClass: "elevation-0" },
             [
               _c(
                 "v-expansion-panel-content",
@@ -24799,7 +24798,7 @@ var render = function() {
         [
           _c(
             "v-toolbar",
-            { staticClass: "elevation-0", attrs: { color: "grey lighten-4" } },
+            { attrs: { color: "grey lighten-4" } },
             [_c("v-list", [_c("v-list-tile")], 1)],
             1
           ),
@@ -25051,7 +25050,6 @@ var render = function() {
         [
           _c(
             "v-expansion-panel",
-            { staticClass: "elevation-0" },
             [
               _c(
                 "v-expansion-panel-content",

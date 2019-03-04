@@ -6,7 +6,7 @@
       :id="generateCssId(item.name)"
       style="width: 100%;"
     >
-      <v-expansion-panel class="elevation-0">
+      <v-expansion-panel>
         <v-expansion-panel-content>
           <div slot="header">
             <h2>
