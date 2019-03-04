@@ -1,12 +1,16 @@
-import Vue from "vue"
-import Vuetify from "vuetify"
-import DefaultLayout from "./components/Layout"
+import Vue from "vue";
+import Vuetify from "vuetify";
+import Layout from "./components/Layout.vue";
+window.Vue = Vue;
+Vue.use(Vuetify);
 
-window.Vue = Vue
-Vue.use(Vuetify)
-const app = new Vue({ //eslint-disable-line
+var app = new Vue({
   el: "#app",
   components: {
-    DefaultLayout
+    "default-layout": Layout
+  },
+  data: {
+    drawer: null,
+    toolbarTitle: "Manage Voucher"
   }
-})
+});

@@ -1,0 +1,21 @@
+<table class="table">
+
+<thead>
+  <tr>
+    <th>JSON attribute</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+</thead>
+
+<tbody>
+@each(attribute in attributes)
+  <tr>
+    <td>{{ attribute.name }}</td>
+    <td>{{ attribute.dataType }}</td>
+    <td>{{ attribute.description }}</td>
+  </tr>
+@endeach
+</tbody>
+
+</table>

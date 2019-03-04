@@ -7,10 +7,10 @@
       fixed
       app
     >
-      <v-toolbar color="grey darken-2">
+      <v-toolbar color="grey lighten-4" class="elevation-0">
         <v-list>
           <v-list-tile>
-            <img src="/img/logo2.png" alt="" width="40%">
+            <!-- <img src="/img/logo.png" alt="" width="80%"> -->
           </v-list-tile>
         </v-list>
       </v-toolbar>
@@ -36,13 +36,13 @@
         </v-list-group>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar :clipped-left="clipped" fixed app>
+    <v-toolbar :clipped-left="clipped" fixed app class="elevation-0">
       <v-toolbar-side-icon @click="drawer = !drawer"/>
       <v-toolbar-title v-text="title"/>
     </v-toolbar>
     <v-content>
       <v-container v-scroll="onScroll" fluid>
-         <v-layout row wrap>
+        <v-layout row wrap>
           <v-flex xs12>
             <h2 id="introduction" class="mb-3">Introduction</h2>
             <vue-markdown :source="description"/>
@@ -51,12 +51,7 @@
         <all-endpoints v-if="items" :data="items"/>
       </v-container>
     </v-content>
-    <v-navigation-drawer
-      :right="right"
-      v-model="rightDrawer"
-      temporary
-      fixed
-    >
+    <v-navigation-drawer :right="right" v-model="rightDrawer" temporary fixed>
       <v-list>
         <v-list-tile @click.native="right = !right">
           <v-list-tile-action>
@@ -68,7 +63,12 @@
     </v-navigation-drawer>
     <v-footer :fixed="fixed" app>
       <div v-if="offsetTop > 300" class="back-btn-wrapper">
-        <v-btn fab="fab" dark="dark" color="primary" @click="$vuetify.goTo('#introduction' ,options)">
+        <v-btn
+          fab="fab"
+          dark="dark"
+          color="primary"
+          @click="$vuetify.goTo('#introduction' ,options)"
+        >
           <v-icon dark="dark">keyboard_arrow_up</v-icon>
         </v-btn>
       </div>
@@ -80,7 +80,7 @@
 import docs from "../../../../docs.json";
 import changeCase from "change-case";
 import AllEndpoints from "./AllEndpoints";
-import VueMarkdown from "vue-markdown"
+import VueMarkdown from "vue-markdown";
 
 export default {
   components: {
@@ -112,8 +112,8 @@ export default {
   },
   mounted() {
     this.title = docs.info.name;
-    this.description = docs.info.description || ""
-    this.items = docs.item || []
+    this.description = docs.info.description || "";
+    this.items = docs.item || [];
   },
   methods: {
     generateLink(text) {

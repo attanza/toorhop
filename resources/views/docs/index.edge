@@ -1,16 +1,20 @@
-@layout('docs.master')
-@section('content')
-  @include('docs.introduction')
-  @include('docs.auth.index')
-  @include('docs.roles.index')
-  @include('docs.permissions.index')
-  @include('docs.users.index')
-  @include('docs.profile.index')
-  @include('docs.supervisor.index')
-  @include('docs.marketing.index')
-  @include('docs.marketing_actions.index')
-  @include('docs.marketing_schedule.index')
-  @include('docs.study_names.index')
-  @include('docs.studies.index')
-  @include('docs.study_years.index')
-@endsection
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+{{ style('css/app.css') }}
+{{ style('css/custom.css') }}
+  <title>Toorhop Payments Documentation</title>
+</head>
+
+<body>
+  <div id="app">
+    <default-layout></default-layout>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+
+</html>

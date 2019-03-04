@@ -1,11 +1,19 @@
 <template>
   <div>
-    <section v-for="(item, index) in data" :key="index" :id="generateCssId(item.name)" style="width: 100%;">
-      <v-expansion-panel>
+    <section
+      v-for="(item, index) in data"
+      :key="index"
+      :id="generateCssId(item.name)"
+      style="width: 100%;"
+    >
+      <v-expansion-panel class="elevation-0">
         <v-expansion-panel-content>
           <div slot="header">
             <h2>
-              <v-chip :color="getColor(item.request.method)" text-color="white" label>{{ item.request.method }} <span>{{ item.request.url.raw }}</span></v-chip>
+              <v-chip :color="getColor(item.request.method)" text-color="white" label>
+                {{ item.request.method }}
+                <span>{{ item.request.url.raw }}</span>
+              </v-chip>
               <small class="subheading">{{ item.name }}</small>
             </h2>
           </div>
@@ -13,7 +21,7 @@
             <v-card-text>
               <v-layout row wrap>
                 <v-flex xs12 style="overflow-x:auto;">
-                  <h3 class="mb-3">Decription: </h3>
+                  <h3 class="mb-3">Decription:</h3>
                   <VueMarkdown :source="item.request.description"/>
                   <!-- <h3 class="mb-3">Header</h3>
                   <table v-if="item.request.header" class="table is-fullwidth">
@@ -25,10 +33,15 @@
                       <th>{{ header.key }}</th>
                       <td>{{ header.value }}</td>
                     </tr>
-                  </table> -->
+                  </table>-->
                 </v-flex>
-                <v-flex v-if="item.request.body && (item.request.body.raw || item.request.body.formdata)" xs12 style="overflow-x:auto;" class="mt-4">
-                  <h3 class="mb-3">Request Body: </h3>
+                <v-flex
+                  v-if="item.request.body && (item.request.body.raw || item.request.body.formdata)"
+                  xs12
+                  style="overflow-x:auto;"
+                  class="mt-4"
+                >
+                  <h3 class="mb-3">Request Body:</h3>
                   <div v-if="item.request.body.raw">
                     <pre><code>{{ parseJson(item.request.body.raw) }}</code></pre>
                   </div>
@@ -48,7 +61,7 @@
                   </div>
                 </v-flex>
                 <v-flex xs12 style="overflow-x:auto;" class="mt-4">
-                  <h3 class="mb-3">Response: </h3>
+                  <h3 class="mb-3">Response:</h3>
                   <pre><code>{{ getResponse(item.response) }}</code></pre>
                 </v-flex>
               </v-layout>
@@ -61,8 +74,8 @@
 </template>
 
 <script>
-import changeCase from "change-case"
-import VueMarkdown from "vue-markdown"
+import changeCase from "change-case";
+import VueMarkdown from "vue-markdown";
 
 export default {
   components: { VueMarkdown },
@@ -74,43 +87,43 @@ export default {
   },
   methods: {
     generateCssId(text) {
-      return changeCase.snakeCase(text).toString()
+      return changeCase.snakeCase(text).toString();
     },
     getColor(method) {
       switch (method) {
         case "GET":
-          return "primary"
+          return "primary";
         case "POST":
-          return "success"
+          return "success";
         case "PUT":
-          return "orange"
+          return "orange";
         case "DELETE":
-          return "red"
+          return "red";
 
         default:
-          return "primary"
+          return "primary";
       }
     },
     parseJson(str) {
       try {
-        return JSON.parse(str)
+        return JSON.parse(str);
       } catch (e) {
-        return str
+        return str;
       }
     },
     getResponse(response) {
       if (response && response[0].body) {
-        return this.parseJson(response[0].body)
+        return this.parseJson(response[0].body);
       } else if (response && response[1].body) {
-        return this.parseJson(response[1].body)
+        return this.parseJson(response[1].body);
       } else if (response && response[2].body) {
-        return this.parseJson(response[2].body)
+        return this.parseJson(response[2].body);
       } else {
-        return ""
+        return "";
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>

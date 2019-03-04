@@ -129,6 +129,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -311,6 +319,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var change_case__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(change_case__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue_markdown__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-markdown */ "./node_modules/vue-markdown/dist/vue-markdown.common.js");
 /* harmony import */ var vue_markdown__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_markdown__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -24683,6 +24704,7 @@ var render = function() {
         [
           _c(
             "v-expansion-panel",
+            { staticClass: "elevation-0" },
             [
               _c(
                 "v-expansion-panel-content",
@@ -24777,20 +24799,8 @@ var render = function() {
         [
           _c(
             "v-toolbar",
-            { attrs: { color: "grey darken-2" } },
-            [
-              _c(
-                "v-list",
-                [
-                  _c("v-list-tile", [
-                    _c("img", {
-                      attrs: { src: "/img/logo2.png", alt: "", width: "40%" }
-                    })
-                  ])
-                ],
-                1
-              )
-            ],
+            { staticClass: "elevation-0", attrs: { color: "grey lighten-4" } },
+            [_c("v-list", [_c("v-list-tile")], 1)],
             1
           ),
           _vm._v(" "),
@@ -24858,7 +24868,10 @@ var render = function() {
       _vm._v(" "),
       _c(
         "v-toolbar",
-        { attrs: { "clipped-left": _vm.clipped, fixed: "", app: "" } },
+        {
+          staticClass: "elevation-0",
+          attrs: { "clipped-left": _vm.clipped, fixed: "", app: "" }
+        },
         [
           _c("v-toolbar-side-icon", {
             on: {
@@ -25038,6 +25051,7 @@ var render = function() {
         [
           _c(
             "v-expansion-panel",
+            { staticClass: "elevation-0" },
             [
               _c(
                 "v-expansion-panel-content",
@@ -25056,7 +25070,11 @@ var render = function() {
                             }
                           },
                           [
-                            _vm._v(_vm._s(item.request.method) + " "),
+                            _vm._v(
+                              "\n              " +
+                                _vm._s(item.request.method) +
+                                "\n              "
+                            ),
                             _c("span", [_vm._v(_vm._s(item.request.url.raw))])
                           ]
                         ),
@@ -25087,7 +25105,7 @@ var render = function() {
                                 },
                                 [
                                   _c("h3", { staticClass: "mb-3" }, [
-                                    _vm._v("Decription: ")
+                                    _vm._v("Decription:")
                                   ]),
                                   _vm._v(" "),
                                   _c("VueMarkdown", {
@@ -25109,7 +25127,7 @@ var render = function() {
                                     },
                                     [
                                       _c("h3", { staticClass: "mb-3" }, [
-                                        _vm._v("Request Body: ")
+                                        _vm._v("Request Body:")
                                       ]),
                                       _vm._v(" "),
                                       item.request.body.raw
@@ -25193,7 +25211,7 @@ var render = function() {
                                 },
                                 [
                                   _c("h3", { staticClass: "mb-3" }, [
-                                    _vm._v("Response: ")
+                                    _vm._v("Response:")
                                   ]),
                                   _vm._v(" "),
                                   _c("pre", [
@@ -63726,17 +63744,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuetify */ "./node_modules/vuetify/dist/vuetify.js");
 /* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vuetify__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _components_Layout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Layout */ "./resources/assets/js/components/Layout.vue");
+/* harmony import */ var _components_Layout_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Layout.vue */ "./resources/assets/js/components/Layout.vue");
 
 
 
 window.Vue = vue__WEBPACK_IMPORTED_MODULE_0___default.a;
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_1___default.a);
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
-  //eslint-disable-line
   el: "#app",
   components: {
-    DefaultLayout: _components_Layout__WEBPACK_IMPORTED_MODULE_2__["default"]
+    "default-layout": _components_Layout_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  data: {
+    drawer: null,
+    toolbarTitle: "Manage Voucher"
   }
 });
 
