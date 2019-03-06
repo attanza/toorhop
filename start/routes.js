@@ -26,6 +26,7 @@ Route.group(() => {
     .middleware(
       new Map([
         [["users.index"], ["can:read-user"]],
+        [["users.show"], ["can:read-user"]],
         [["users.store"], ["can:create-user"]],
         [["users.update"], ["can:update-user"]],
         [["users.destroy"], ["can:delete-user"]]
@@ -47,6 +48,7 @@ Route.group(() => {
     .middleware(
       new Map([
         [["midtrans-payments.index"], ["can:read-midtrans-payment"]],
+        [["midtrans-payments.show"], ["can:read-midtrans-payment"]],
         [["midtrans-payments.store"], ["can:create-midtrans-payment"]],
         [["midtrans-payments.update"], ["can:update-midtrans-payment"]],
         [["midtrans-payments.destroy"], ["can:delete-midtrans-payment"]]

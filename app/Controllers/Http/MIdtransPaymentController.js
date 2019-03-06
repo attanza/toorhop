@@ -2,6 +2,7 @@
 
 const MidtransPayment = use("App/Models/MidtransPayment")
 const { ResponseParser, ErrorLog } = use("App/Helpers")
+const { ActivityTraits } = use("App/Traits")
 const Helpers = use("Helpers")
 const Drive = use("Drive")
 const fillable = ["name", "bank", "transaction_type", "payment_type"]
@@ -138,9 +139,11 @@ class MidtransPaymentController {
         return response.status(400).send(ResponseParser.apiNotFound())
       }
 
-      let exists = await Drive.exists(Helpers.publicPath(data.logo))
-      if (exists) {
-        await Drive.delete(Helpers.publicPath(data.logo))
+      if (data.logo) {
+        let exists = await Drive.exists(Helpers.publicPath(data.logo))
+        if (exists) {
+          await Drive.delete(Helpers.publicPath(data.logo))
+        }
       }
 
       const activity = `Delete Midtrans Payment '${data.slug}'`

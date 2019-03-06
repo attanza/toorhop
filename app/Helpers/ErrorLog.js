@@ -1,10 +1,12 @@
 const Env = use("Env")
 const ErrorLog = use("App/Models/ErrorLog")
 const MailHelper = require("./MailHelper")
-module.exports = async (request, e) => {
+module.exports = (request, e) => {
   const NODE_ENV = Env.get("NODE_ENV")
-  if (NODE_ENV === "production") {
-    await ErrorLog.create({
+  if (NODE_ENV === "development") {
+    console.log("e", e)
+  } else {
+    ErrorLog.create({
       url: request.url(),
       method: request.method(),
       error: e.message

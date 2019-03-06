@@ -32,6 +32,7 @@
     "@adonisjs/lucid-slugify": "^1.0.3",
     "@adonisjs/mail": "^3.0.9",
     "@adonisjs/validator": "^5.0.6",
+    "@adonisjs/vow": "^1.0.17",
     "adonis-acl": "^1.1.1",
     "axios": "^0.18.0",
     "change-case": "^3.1.0",
