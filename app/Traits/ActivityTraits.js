@@ -7,7 +7,7 @@ class ActivityTraits {
     const headers = request.headers()
     const user = await auth.getUser()
     await Activity.create({
-      user_id: user._id,
+      user_id: user.id,
       ip: request.ip(),
       browser: headers['user-agent'],
       activity

@@ -1,15 +1,20 @@
 "use strict"
 
-const User = use("App/Models/User")
-const Role = use("App/Models/Role")
+const MidtransPayment = use("App/Models/MidtransPayment")
 const { ResponseParser, ErrorLog } = use("App/Helpers")
-const { ActivityTraits } = use("App/Traits")
-const randomstring = require("randomstring")
+const Helpers = use("Helpers")
+const Drive = use("Drive")
+const fillable = ["name", "bank", "transaction_type", "payment_type"]
 
-class UserController {
+/**
+ * MidtransPaymentController
+ *
+ */
+
+class MidtransPaymentController {
   /**
    * Index
-   * Get List of Users
+   * Get List of MidtransPayments
    */
   async index({ request, response }) {
     try {
@@ -31,12 +36,13 @@ class UserController {
       if (!sort_by) sort_by = "id"
       if (!sort_mode) sort_mode = "desc"
 
-      const data = await User.query()
-        .with("roles")
+      const data = await MidtransPayment.query()
         .where(function() {
           if (search && search != "") {
-            this.where("username", "like", `%${search}%`)
-            this.orWhere("client", "like", `%${search}%`)
+            this.where("name", "like", `%${search}%`)
+            this.orWhere("bank", "like", `%${search}%`)
+            this.orWhere("transaction_type", "like", `%${search}%`)
+            this.orWhere("payment_type", "like", `%${search}%`)
           }
 
           if (search_by && search_query) {
@@ -51,41 +57,22 @@ class UserController {
         .paginate(page, limit)
 
       let parsed = ResponseParser.apiCollection(data.toJSON())
-
       return response.status(200).send(parsed)
     } catch (e) {
       const error = ErrorLog(request, e)
       return response.status(error.status).send({ meta: error.meta })
     }
   }
-
   /**
    * Store
-   * Create New User
+   * Store New MidtransPayments
    */
-
   async store({ request, response, auth }) {
     try {
-      const { username, client, role_id, password } = request.post()
-      const client_key = randomstring.generate({
-        length: 12,
-        charset: "alphabetic"
-      })
-      const secret = randomstring.generate({
-        length: 40,
-        charset: "hex"
-      })
-      const data = await User.create({
-        username,
-        client,
-        client_key,
-        secret,
-        password
-      })
-      await this.attachRoles(data, [role_id])
-      await data.load("roles")
-
-      const activity = `Add new User '${data.client}'`
+      let body = request.only(fillable)
+      const data = await MidtransPayment.create(body)
+      await this.uploadLogo(request, data)
+      const activity = `Add new Midtrans Payment '${data.slug}'`
       await ActivityTraits.saveActivity(request, auth, activity)
       let parsed = ResponseParser.apiCreated(data.toJSON())
       return response.status(201).send(parsed)
@@ -97,17 +84,15 @@ class UserController {
 
   /**
    * Show
-   * Get User by ID
+   * MidtransPayment by id
    */
-
   async show({ request, response }) {
     try {
       const id = request.params.id
-      const data = await User.find(id)
+      const data = await MidtransPayment.find(id)
       if (!data) {
         return response.status(400).send(ResponseParser.apiNotFound())
       }
-      await data.load("roles")
       let parsed = ResponseParser.apiItem(data.toJSON())
       return response.status(200).send(parsed)
     } catch (e) {
@@ -118,27 +103,21 @@ class UserController {
 
   /**
    * Update
-   * Update User data by ID
+   * Update MidtransPayment by Id
    */
-
   async update({ request, response, auth }) {
     try {
+      let body = request.only(fillable)
       const id = request.params.id
-      const data = await User.find(id)
-      if (!data) {
+      const data = await MidtransPayment.find(id)
+      if (!data || data.length === 0) {
         return response.status(400).send(ResponseParser.apiNotFound())
       }
-      const { username, client, role_id, is_active } = request.post()
-      data.merge({
-        username,
-        client,
-        is_active
-      })
+      await data.merge(body)
       await data.save()
-      await this.attachRoles(data, [role_id])
-      await data.load("roles")
-      const activity = `Update user '${data.client}'`
+      const activity = `Update Midtrans Payment '${data.slug}'`
       await ActivityTraits.saveActivity(request, auth, activity)
+      await this.uploadLogo(request, data)
       let parsed = ResponseParser.apiUpdated(data.toJSON())
       return response.status(200).send(parsed)
     } catch (e) {
@@ -149,24 +128,24 @@ class UserController {
 
   /**
    * Delete
-   * Delete User data by ID
+   * Delete MidtransPayment by Id
    */
-
   async destroy({ request, response, auth }) {
     try {
       const id = request.params.id
-      const data = await User.find(id)
+      const data = await MidtransPayment.find(id)
       if (!data) {
         return response.status(400).send(ResponseParser.apiNotFound())
       }
 
-      const activity = `Delete User '${data.name}'`
+      let exists = await Drive.exists(Helpers.publicPath(data.logo))
+      if (exists) {
+        await Drive.delete(Helpers.publicPath(data.logo))
+      }
+
+      const activity = `Delete Midtrans Payment '${data.slug}'`
       await ActivityTraits.saveActivity(request, auth, activity)
-      // Delete Relationship
-      await data.tokens().delete()
-      await data.roles().detach()
-      await data.activities().delete()
-      // Delete Data
+
       await data.delete()
       return response.status(200).send(ResponseParser.apiDeleted())
     } catch (e) {
@@ -176,17 +155,36 @@ class UserController {
   }
 
   /**
-   * Attach Users to User
+   * @param {file} logo
+   * @returns Midtrans Payment data
    */
 
-  async attachRoles(user, roles) {
-    let confirmedRoles = []
-    for (let i = 0; i < roles.length; i++) {
-      let data = await Role.find(roles[i])
-      if (data) confirmedRoles.push(data.id)
+  async uploadLogo(request, midatransData) {
+    try {
+      const logo = request.file("logo", {
+        types: ["image"],
+        size: "5mb"
+      })
+
+      if (!logo) {
+        return
+      }
+      const name = `${new Date().getTime()}.${logo.subtype}`
+
+      await logo.move(Helpers.publicPath("img/bank_logos"), { name })
+
+      if (!logo.moved()) {
+        throw { message: "logo failed to upload", status: 400 }
+      }
+      await midatransData.merge({ logo: `/img/bank_logos/${name}` })
+      await midatransData.save()
+      const activity = `Upload Midtrans Payment logo '${data.slug}'`
+      await ActivityTraits.saveActivity(request, auth, activity)
+      return midatransData
+    } catch (e) {
+      throw e
     }
-    await user.roles().sync(confirmedRoles)
   }
 }
 
-module.exports = UserController
+module.exports = MidtransPaymentController

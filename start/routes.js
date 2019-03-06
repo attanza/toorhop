@@ -1,14 +1,14 @@
-"use strict";
+"use strict"
 
-const Route = use("Route");
+const Route = use("Route")
 
-Route.get("/", "DocumentController.index");
+Route.get("/", "DocumentController.index")
 
 Route.group(() => {
-  Route.post("login", "AuthController.login");
+  Route.post("login", "AuthController.login")
 })
   .prefix("api/v1")
-  .formats(["json"]);
+  .formats(["json"])
 
 Route.group(() => {
   /**
@@ -30,8 +30,29 @@ Route.group(() => {
         [["users.update"], ["can:update-user"]],
         [["users.destroy"], ["can:delete-user"]]
       ])
-    );
+    )
+
+  /**
+   * Midtrans Payment
+   */
+
+  Route.resource("midtrans-payments", "MidtransPaymentController")
+    .apiOnly()
+    .validator(
+      new Map([
+        [["midtrans-payments.store"], ["StoreMidtransPayment"]],
+        [["midtrans-payments.update"], ["UpdateMidtransPayment"]]
+      ])
+    )
+    .middleware(
+      new Map([
+        [["midtrans-payments.index"], ["can:read-midtrans-payment"]],
+        [["midtrans-payments.store"], ["can:create-midtrans-payment"]],
+        [["midtrans-payments.update"], ["can:update-midtrans-payment"]],
+        [["midtrans-payments.destroy"], ["can:delete-midtrans-payment"]]
+      ])
+    )
 })
   .prefix("api/v1")
   .formats(["json"])
-  .middleware(["auth:jwt"]);
+  .middleware(["auth:jwt"])

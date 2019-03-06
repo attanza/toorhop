@@ -27,14 +27,8 @@ class UserSeeder {
       username: "toorhop",
       password: "password",
       client: "Toorhop",
-      client_key: randomstring.generate({
-        length: 12,
-        charset: "alphabetic"
-      }),
-      secret: randomstring.generate({
-        length: 40,
-        charset: "hex"
-      }),
+      client_key: "LFgQNUYugaRy",
+      secret: "63124939efecaefa67b2e22cd09881b49e748f2b",
       is_active: 1
     });
   }

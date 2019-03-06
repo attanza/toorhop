@@ -1,5 +1,5 @@
-const ActivityTraits = require("./ActivityTraits");
+const ActivityTraits = require("./ActivityTraits")
 
 module.exports = {
   ActivityTraits
-};
+}
