@@ -46,6 +46,9 @@ class MidtranController {
         )
     } catch (e) {
       console.log("e", e)
+      return response
+        .status(e.status)
+        .send(ResponseParser.errorResponse(e.message))
     }
   }
 
