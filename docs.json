@@ -547,6 +547,528 @@
           }
         }
       ]
+    },
+    {
+      "name": "Midtrans Payment Type",
+      "item": [
+        {
+          "name": "List",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "cbb471cb-dc95-4154-bdd7-27d1d8eb91af",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/midtrans-payments",
+              "host": ["{{baseUrl}}"],
+              "path": ["midtrans-payments"]
+            }
+          },
+          "response": [
+            {
+              "name": "List",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/midtrans-payments",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["midtrans-payments"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "345"
+                },
+                {
+                  "key": "Date",
+                  "value": "Wed, 06 Mar 2019 14:29:53 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"status\": 200,\n        \"message\": \"Data retrieval successfully\",\n        \"total\": 1,\n        \"perPage\": 10,\n        \"page\": 1,\n        \"lastPage\": 1\n    },\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"BNI Virtual Account\",\n            \"slug\": \"bni-virtual-account\",\n            \"bank\": \"BNI\",\n            \"transaction_type\": \"Bank Transfer\",\n            \"payment_type\": \"bank_transfer\",\n            \"logo\": null,\n            \"created_at\": \"2019-03-06 21:25:57\",\n            \"updated_at\": \"2019-03-06 21:25:57\"\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Store",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "faa06f86-9d77-4748-8087-c9bcb8752b15",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "let resp = pm.response.json();",
+                  "",
+                  "pm.environment.set(\"resourceId\", resp.data.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Mandiri Bill Payment",
+                  "type": "text"
+                },
+                {
+                  "key": "bank",
+                  "value": "Mandiri",
+                  "type": "text"
+                },
+                {
+                  "key": "transaction_type",
+                  "value": "Bank Transfer",
+                  "type": "text"
+                },
+                {
+                  "key": "payment_type",
+                  "value": "echannel",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/midtrans-payments",
+              "host": ["{{baseUrl}}"],
+              "path": ["midtrans-payments"]
+            }
+          },
+          "response": [
+            {
+              "name": "Store",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"name\": \"Mandiri Bill Payment\",\n\t\"bank\": \"Mandiri\",\n\t\"transaction_type\": \"Bank Transfer\",\n\t\"payment_type\": \"echannel\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/midtrans-payments",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["midtrans-payments"]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "280"
+                },
+                {
+                  "key": "Date",
+                  "value": "Wed, 06 Mar 2019 14:34:12 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"status\": 201,\n        \"message\": \"Created successfully\"\n    },\n    \"data\": {\n        \"name\": \"Mandiri Bill Payment\",\n        \"bank\": \"Mandiri\",\n        \"transaction_type\": \"Bank Transfer\",\n        \"payment_type\": \"echannel\",\n        \"slug\": \"mandiri-bill-payment\",\n        \"created_at\": \"2019-03-06 21:34:12\",\n        \"updated_at\": \"2019-03-06 21:34:12\",\n        \"id\": 2\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Show",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "cbb471cb-dc95-4154-bdd7-27d1d8eb91af",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/midtrans-payments/{{resourceId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["midtrans-payments", "{{resourceId}}"]
+            }
+          },
+          "response": [
+            {
+              "name": "Show",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/midtrans-payments/{{resourceId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["midtrans-payments", "{{resourceId}}"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "299"
+                },
+                {
+                  "key": "Date",
+                  "value": "Wed, 06 Mar 2019 14:36:06 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"status\": 200,\n        \"message\": \"Data retrieval successfully\"\n    },\n    \"data\": {\n        \"id\": 2,\n        \"name\": \"Mandiri Bill Payment\",\n        \"slug\": \"mandiri-bill-payment\",\n        \"bank\": \"Mandiri\",\n        \"transaction_type\": \"Bank Transfer\",\n        \"payment_type\": \"echannel\",\n        \"logo\": null,\n        \"created_at\": \"2019-03-06 21:34:12\",\n        \"updated_at\": \"2019-03-06 21:34:12\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "faa06f86-9d77-4748-8087-c9bcb8752b15",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Mandiri Bill Payment",
+                  "type": "text"
+                },
+                {
+                  "key": "bank",
+                  "value": "Mandiri",
+                  "type": "text"
+                },
+                {
+                  "key": "transaction_type",
+                  "value": "Bank Transfer",
+                  "type": "text"
+                },
+                {
+                  "key": "payment_type",
+                  "value": "echannel",
+                  "type": "text"
+                },
+                {
+                  "key": "logo",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/midtrans-payments/{{resourceId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["midtrans-payments", "{{resourceId}}"]
+            }
+          },
+          "response": [
+            {
+              "name": "Update",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "name": "Content-Type",
+                    "type": "text",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "name",
+                      "value": "Mandiri Bill Payment",
+                      "type": "text"
+                    },
+                    {
+                      "key": "bank",
+                      "value": "Mandiri",
+                      "type": "text"
+                    },
+                    {
+                      "key": "transaction_type",
+                      "value": "Bank Transfer",
+                      "type": "text"
+                    },
+                    {
+                      "key": "payment_type",
+                      "value": "echannel",
+                      "type": "text"
+                    },
+                    {
+                      "key": "logo",
+                      "type": "file"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/midtrans-payments/{{resourceId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["midtrans-payments", "{{resourceId}}"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "323"
+                },
+                {
+                  "key": "Date",
+                  "value": "Wed, 06 Mar 2019 15:03:01 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"status\": 200,\n        \"message\": \"Updated successfully\"\n    },\n    \"data\": {\n        \"id\": 2,\n        \"name\": \"Mandiri Bill Payment\",\n        \"slug\": \"mandiri-bill-payment\",\n        \"bank\": \"Mandiri\",\n        \"transaction_type\": \"Bank Transfer\",\n        \"payment_type\": \"echannel\",\n        \"logo\": \"/img/bank_logos/1551884581477.png\",\n        \"created_at\": \"2019-03-06 21:34:12\",\n        \"updated_at\": \"2019-03-06 22:03:01\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "cbb471cb-dc95-4154-bdd7-27d1d8eb91af",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/midtrans-payments/{{resourceId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["midtrans-payments", "{{resourceId}}"]
+            }
+          },
+          "response": [
+            {
+              "name": "Delete",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/users/{{resourceId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["users", "{{resourceId}}"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "56"
+                },
+                {
+                  "key": "Date",
+                  "value": "Thu, 28 Feb 2019 16:48:03 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"status\": 200,\n        \"message\": \"Deleted successfully\"\n    }\n}"
+            }
+          ]
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{token}}",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "7502955f-bd5a-4af1-9659-828862533af6",
+            "type": "text/javascript",
+            "exec": [""]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "91a21b10-9d9c-4448-954e-06229271898d",
+            "type": "text/javascript",
+            "exec": [""]
+          }
+        }
+      ]
     }
   ]
 }
