@@ -67,6 +67,7 @@ class MidtransPaymentController {
   /**
    * Store
    * Store New MidtransPayments
+   *
    */
   async store({ request, response, auth }) {
     try {
