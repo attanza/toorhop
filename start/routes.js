@@ -6,6 +6,14 @@ Route.get("/", "DocumentController.index")
 
 Route.group(() => {
   Route.post("login", "AuthController.login")
+
+  Route.post("midtrans-charge", "MidtransController.charge").validator(
+    "MidtransCharge"
+  )
+  Route.post(
+    "midtrans-notification-handler",
+    "MidtransController.notificationHandle"
+  )
 })
   .prefix("api/v1")
   .formats(["json"])
