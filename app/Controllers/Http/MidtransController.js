@@ -45,10 +45,10 @@ class MidtranController {
           ResponseParser.successResponse(midtransResponse, "Midtrans Response")
         )
     } catch (e) {
-      console.log("e", e)
+      console.log("response", e.response)
       return response
-        .status(e.status)
-        .send(ResponseParser.errorResponse(e.message))
+        .status(400)
+        .send(ResponseParser.errorResponse("Transaction failed"))
     }
   }
 
