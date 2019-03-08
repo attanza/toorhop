@@ -53,44 +53,44 @@ class MidtranController {
 
   async notificationHandle({ request, response }) {
     const receivedJson = request.post()
-    console.log("receivedJson", receivedJson)
-    core.transaction
-      .notification(receivedJson)
-      .then(transactionStatusObject => {
-        console.log("transactionStatusObject", transactionStatusObject)
-        let orderId = transactionStatusObject.order_id
-        let transactionStatus = transactionStatusObject.transaction_status
-        let fraudStatus = transactionStatusObject.fraud_status
+    return response.status(200).send(receivedJson)
+    // core.transaction
+    //   .notification(receivedJson)
+    //   .then(transactionStatusObject => {
+    //     console.log("transactionStatusObject", transactionStatusObject)
+    //     let orderId = transactionStatusObject.order_id
+    //     let transactionStatus = transactionStatusObject.transaction_status
+    //     let fraudStatus = transactionStatusObject.fraud_status
 
-        let summary = `Transaction notification received. Order ID: ${orderId}. Transaction status: ${transactionStatus}. Fraud status: ${fraudStatus}.<br>Raw notification object:<pre>${JSON.stringify(
-          transactionStatusObject,
-          null,
-          2
-        )}</pre>`
+    //     let summary = `Transaction notification received. Order ID: ${orderId}. Transaction status: ${transactionStatus}. Fraud status: ${fraudStatus}.<br>Raw notification object:<pre>${JSON.stringify(
+    //       transactionStatusObject,
+    //       null,
+    //       2
+    //     )}</pre>`
 
-        // Sample transactionStatus handling logic
-        if (transactionStatus == "capture") {
-          if (fraudStatus == "challenge") {
-            // TODO set transaction status on your databaase to 'challenge'
-            console.log("challange")
-          } else if (fraudStatus == "accept") {
-            // TODO set transaction status on your databaase to 'success'
-            console.log("success")
-          }
-        } else if (
-          transactionStatus == "cancel" ||
-          transactionStatus == "deny" ||
-          transactionStatus == "expire"
-        ) {
-          // TODO set transaction status on your databaase to 'failure'
-          console.log("cancel, deny, expired")
-        } else if (transactionStatus == "pending") {
-          // TODO set transaction status on your databaase to 'pending' / waiting payment
-          console.log("pending")
-        }
-        console.log(summary)
-        return response.status(200).send(summary)
-      })
+    //     // Sample transactionStatus handling logic
+    //     if (transactionStatus == "capture") {
+    //       if (fraudStatus == "challenge") {
+    //         // TODO set transaction status on your databaase to 'challenge'
+    //         console.log("challange")
+    //       } else if (fraudStatus == "accept") {
+    //         // TODO set transaction status on your databaase to 'success'
+    //         console.log("success")
+    //       }
+    //     } else if (
+    //       transactionStatus == "cancel" ||
+    //       transactionStatus == "deny" ||
+    //       transactionStatus == "expire"
+    //     ) {
+    //       // TODO set transaction status on your databaase to 'failure'
+    //       console.log("cancel, deny, expired")
+    //     } else if (transactionStatus == "pending") {
+    //       // TODO set transaction status on your databaase to 'pending' / waiting payment
+    //       console.log("pending")
+    //     }
+    //     console.log(summary)
+    //     return response.status(200).send(summary)
+    //   })
   }
 }
 
