@@ -62,6 +62,12 @@ Route.group(() => {
         [["midtrans-payments.destroy"], ["can:delete-midtrans-payment"]]
       ])
     )
+
+  /**
+   * Transaction Log
+   */
+
+  Route.get("transaction-logs", "TransactionLogController.index")
 })
   .prefix("api/v1")
   .formats(["json"])
