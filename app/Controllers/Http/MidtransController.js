@@ -53,6 +53,7 @@ class MidtranController {
 
   async notificationHandle({ request, response }) {
     const receivedJson = request.post()
+    console.log("receivedJson", receivedJson)
     return response.status(200).send(receivedJson)
     // core.transaction
     //   .notification(receivedJson)
