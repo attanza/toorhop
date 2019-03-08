@@ -4,6 +4,7 @@ const MidtransPayment = use("App/Models/MidtransPayment")
 const midtransClient = require("midtrans-client")
 const Env = use("Env")
 const { ResponseParser } = use("App/Helpers")
+const { TransactionLog } = use("App/Traits")
 const core = new midtransClient.CoreApi({
   isProduction: false,
   serverKey: Env.get("MIDTRANS_DEV_SERVER_KEY"),
@@ -54,6 +55,7 @@ class MidtranController {
   async notificationHandle({ request, response }) {
     const receivedJson = request.post()
     console.log("receivedJson", receivedJson)
+    await TransactionLog(receivedJson)
     return response.status(200).send(receivedJson)
     // core.transaction
     //   .notification(receivedJson)
