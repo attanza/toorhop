@@ -7,15 +7,30 @@ Route.get("/", "DocumentController.index")
 Route.group(() => {
   Route.post("login", "AuthController.login")
 
-  Route.post("midtrans-charge", "MidtransController.charge").validator(
-    "MidtransCharge"
-  )
   Route.post(
     "midtrans-notification-handler",
     "MidtransController.notificationHandle"
   )
+
+  Route.post("token/create", "ClientController.createToken").validator(
+    "CreateToken"
+  )
 })
   .prefix("api/v1")
+  .formats(["json"])
+
+/**
+ * Clients
+ */
+
+Route.group(() => {
+  Route.get("token/extract", "ClientController.extract")
+  Route.post("midtrans-charge", "MidtransController.charge").validator(
+    "MidtransCharge"
+  )
+})
+  .prefix("api/v1")
+  .middleware("client")
   .formats(["json"])
 
 Route.group(() => {
