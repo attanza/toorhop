@@ -13,7 +13,6 @@ var r, m
 module.exports = (request, midtransPayment) => {
   r = request
   m = midtransPayment
-  console.log("midtransPayment.slug", midtransPayment.slug)
   switch (midtransPayment.slug) {
     case "bni-virtual-account":
       return bni_virtual_account()

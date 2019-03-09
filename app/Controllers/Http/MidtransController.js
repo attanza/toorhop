@@ -5,6 +5,7 @@ const midtransClient = require("midtrans-client")
 const Env = use("Env")
 const { ResponseParser, GetMidtransPostData } = use("App/Helpers")
 const { TransactionLog } = use("App/Traits")
+const crypto = require("crypto")
 const core = new midtransClient.CoreApi({
   isProduction: false,
   serverKey: Env.get("MIDTRANS_DEV_SERVER_KEY"),
@@ -44,7 +45,21 @@ class MidtranController {
 
   async notificationHandle({ request, response }) {
     const receivedJson = request.post()
+    const { order_id, status_code, gross_amount, signature_key } = receivedJson
+    // Validate signature key
     console.log("receivedJson", receivedJson)
+    const key = Env.get("MIDTRANS_DEV_SERVER_KEY")
+    const text = `${order_id}${status_code}${gross_amount}${key}`
+    console.log("text", text)
+    const sha512 = crypto
+      .createHash("sha512")
+      .update(text)
+      .digest("hex")
+    console.log("created key", sha512)
+    console.log("midtrans signature: ", signature_key)
+    if (sha512 !== signature_key) {
+      return response.status(401).send(ResponseParser.unauthorizedResponse())
+    }
     await TransactionLog(request, receivedJson)
     return response.status(200).send(receivedJson)
     // core.transaction
@@ -88,3 +103,15 @@ class MidtranController {
 }
 
 module.exports = MidtranController
+
+// $orderId = "1111";
+// $statusCode = "200";
+// $grossAmount = "100000.00";
+// $serverKey = "askvnoibnosifnboseofinbofinfgbiufglnbfg";
+// $input = $orderId.$statusCode.$grossAmount.$serverKey;
+// $signature = openssl_digest($input, 'sha512');
+// echo "INPUT: " , $input."<br/>";
+// echo "SIGNATURE: " , $signature;
+// SHA512(order_id+status_code+gross_amount+serverkey)
+
+//  receivedJson { va_numbers: [ { va_number: '9888719372310311', bank: 'bni' } ],
