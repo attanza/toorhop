@@ -75,6 +75,10 @@ function bni_virtual_account() {
  */
 
 function mandiri_bill_payment() {
+  const { order_id } = r.post()
   let postData = getBaseData()
+  postData.echannel = {
+    bill_info1: "Payment For: " + order_id
+  }
   return postData
 }
