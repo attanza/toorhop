@@ -5,7 +5,7 @@ const moment = use("moment")
 const Env = use("Env")
 const jwt = require("jsonwebtoken")
 const User = use("App/Models/User")
-
+const expiry = Env.get("CLIENT_TOKEN_EXPIRATION")
 class ClientController {
   async createToken({ request, response }) {
     try {
@@ -19,7 +19,7 @@ class ClientController {
       const date = moment().unix()
       const token = await jwt.sign(
         {
-          exp: Math.floor(Date.now() / 1000) + 60 * 60,
+          exp: Math.floor(Date.now() / 1000) + expiry * 60,
           data: {
             date,
             client_key: user.client_key

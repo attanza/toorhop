@@ -4,7 +4,7 @@ const { ResponseParser } = use("App/Helpers")
 const User = use("App/Models/User")
 const moment = use("moment")
 const jwt = require("jsonwebtoken")
-
+const Env = use("Env")
 class Client {
   async handle(ctx, next) {
     try {
@@ -56,7 +56,6 @@ class Client {
       }
 
       const decrypted = jwt.verify(token, user.secret)
-      console.log("decrypted", decrypted)
       if (!decrypted) {
         console.log("decrypt failed") //eslint-disable-line
 
@@ -71,9 +70,6 @@ class Client {
           .status(401)
           .send(ResponseParser.unauthorizedResponse())
       }
-
-      console.log("user.client_key", user.client_key)
-      console.log("decrypted.client_key", decrypted.data.client_key)
 
       if (user.client_key !== decrypted.data.client_key) {
         console.log("client_key not matched") //eslint-disable-line
@@ -97,8 +93,9 @@ class Client {
 module.exports = Client
 
 function checkDate(dateData) {
+  const expiry = Env.get("CLIENT_TOKEN_EXPIRATION")
   const now = moment()
-  const dateAdded = moment.unix(dateData).add(10, "m")
+  const dateAdded = moment.unix(dateData).add(expiry, "m")
 
   if (now > dateAdded) return false
   return true

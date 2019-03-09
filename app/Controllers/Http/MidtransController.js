@@ -3,7 +3,7 @@
 const MidtransPayment = use("App/Models/MidtransPayment")
 const midtransClient = require("midtrans-client")
 const Env = use("Env")
-const { ResponseParser } = use("App/Helpers")
+const { ResponseParser, GetMidtransPostData } = use("App/Helpers")
 const { TransactionLog } = use("App/Traits")
 const core = new midtransClient.CoreApi({
   isProduction: false,
@@ -22,33 +22,21 @@ class MidtranController {
           .status(400)
           .send(ResponseParser.errorResponse("Midtrans payment unknown"))
       }
-      const { customer_details, item_details, order_id } = request.post()
-      let gross_amount = 0
-      item_details.map(item => (gross_amount += item.price * item.quantity))
-      const postData = {
-        payment_type: midtransPayment.payment_type,
-        transaction_details: {
-          gross_amount: 10000,
-          order_id
-        },
-        customer_details,
-        item_details,
-        bank_transfer: {
-          bank: changeCase.lowerCase(midtransPayment.bank),
-          va_number: "111111"
-        }
-      }
-      const midtransResponse = await core.charge(postData)
 
-      return response
-        .status(200)
-        .send(
-          ResponseParser.successResponse(midtransResponse, "Midtrans Response")
-        )
+      const postData = GetMidtransPostData(request, midtransPayment)
+      return response.status(200).send(postData)
+      // const midtransResponse = await core.charge(postData)
+
+      // return response
+      //   .status(200)
+      //   .send(
+      //     ResponseParser.successResponse(midtransResponse, "Midtrans Response")
+      //   )
     } catch (e) {
+      console.log("e", e)
       return response
         .status(400)
-        .send(ResponseParser.errorResponse(e.ApiResponse))
+        .send(ResponseParser.errorResponse(e.ApiResponse || "Operation failed"))
     }
   }
 
