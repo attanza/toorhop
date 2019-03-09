@@ -78,7 +78,8 @@ function mandiri_bill_payment() {
   const { order_id } = r.post()
   let postData = getBaseData()
   postData.echannel = {
-    bill_info1: "Payment For: " + order_id
+    bill_info1: "Payment For: " + order_id,
+    bill_info2: "debt"
   }
   return postData
 }
