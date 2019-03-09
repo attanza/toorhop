@@ -13,6 +13,8 @@ class TransactionLogSchema extends Schema {
       table.string("fraud_status")
       table.string("transaction_status")
       table.text("detail")
+      table.string("ip")
+      table.string("hostname")
       table.timestamps()
     })
   }

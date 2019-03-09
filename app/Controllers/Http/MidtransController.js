@@ -10,7 +10,6 @@ const core = new midtransClient.CoreApi({
   serverKey: Env.get("MIDTRANS_DEV_SERVER_KEY"),
   clientKey: Env.get("MIDTRANS_DEV_CLIENT_KEY")
 })
-const changeCase = require("change-case")
 
 class MidtranController {
   async charge({ request, response }) {
@@ -23,8 +22,14 @@ class MidtranController {
           .send(ResponseParser.errorResponse("Midtrans payment unknown"))
       }
 
+      console.log("request.ip()", request.ip())
+
+      console.log("request.subdomains()", request.subdomains())
+
+      console.log("request.hostname()", request.hostname())
+
       const postData = GetMidtransPostData(request, midtransPayment)
-      return response.status(200).send(postData)
+      return response.status(200).send(ResponseParser.successResponse(postData))
       // const midtransResponse = await core.charge(postData)
 
       // return response
@@ -33,7 +38,6 @@ class MidtranController {
       //     ResponseParser.successResponse(midtransResponse, "Midtrans Response")
       //   )
     } catch (e) {
-      console.log("e", e)
       return response
         .status(400)
         .send(ResponseParser.errorResponse(e.ApiResponse || "Operation failed"))
@@ -43,7 +47,7 @@ class MidtranController {
   async notificationHandle({ request, response }) {
     const receivedJson = request.post()
     console.log("receivedJson", receivedJson)
-    await TransactionLog(receivedJson)
+    await TransactionLog(request, receivedJson)
     return response.status(200).send(receivedJson)
     // core.transaction
     //   .notification(receivedJson)

@@ -69,6 +69,11 @@ function bni_virtual_account() {
   return postData
 }
 
+/**
+ * BNI Virtual Account Post Data
+ * @returns {baseData}
+ */
+
 function mandiri_bill_payment() {
   let postData = getBaseData()
   return postData
