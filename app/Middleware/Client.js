@@ -9,7 +9,8 @@ class Client {
   async handle(ctx, next) {
     try {
       console.log("ctx.request.headers()", ctx.request.headers())
-      const { date, clientkey, token } = ctx.request.headers()
+      const client_key = ctx.request.header("x-toorhop-key")
+      const { date, token } = ctx.request.headers()
 
       if (!date) {
         console.log("no date") //eslint-disable-line
@@ -25,8 +26,8 @@ class Client {
           .send(ResponseParser.unauthorizedResponse())
       }
 
-      if (!clientkey) {
-        console.log("no clientkey") //eslint-disable-line
+      if (!client_key) {
+        console.log("no client_key") //eslint-disable-line
 
         return ctx.response
           .status(401)
@@ -41,7 +42,7 @@ class Client {
           .send(ResponseParser.unauthorizedResponse())
       }
 
-      const user = await User.findBy("client_key", clientkey)
+      const user = await User.findBy("client_key", client_key)
       if (!user) {
         console.log("no user") //eslint-disable-line
         return ctx.response
@@ -72,8 +73,8 @@ class Client {
           .send(ResponseParser.unauthorizedResponse())
       }
 
-      if (user.clientkey !== decrypted.data.clientkey) {
-        console.log("clientkey not matched") //eslint-disable-line
+      if (user.client_key !== decrypted.data.client_key) {
+        console.log("client_key not matched") //eslint-disable-line
         return ctx.response
           .status(401)
           .send(ResponseParser.unauthorizedResponse())
