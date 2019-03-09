@@ -8,7 +8,6 @@ const Env = use("Env")
 class Client {
   async handle(ctx, next) {
     try {
-      console.log("ctx.request.headers()", ctx.request.headers())
       const client_key = ctx.request.header("x-toorhop-key")
       const { date, token } = ctx.request.headers()
 
