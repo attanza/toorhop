@@ -22,12 +22,6 @@ class MidtranController {
           .send(ResponseParser.errorResponse("Midtrans payment unknown"))
       }
 
-      console.log("request.ip()", request.ip())
-
-      console.log("request.subdomains()", request.subdomains())
-
-      console.log("request.hostname()", request.hostname())
-
       const postData = GetMidtransPostData(request, midtransPayment)
       const midtransResponse = await core.charge(postData)
 
