@@ -23,6 +23,10 @@ class MidtranController {
       }
 
       const postData = GetMidtransPostData(request, midtransPayment)
+      // return response
+      //   .status(200)
+      //   .send(ResponseParser.successResponse(postData, "post data"))
+
       const midtransResponse = await core.charge(postData)
 
       return response
@@ -31,6 +35,7 @@ class MidtranController {
           ResponseParser.successResponse(midtransResponse, "Midtrans Response")
         )
     } catch (e) {
+      console.log("e", e.message)
       return response
         .status(400)
         .send(ResponseParser.errorResponse(e.ApiResponse || "Operation failed"))

@@ -13,14 +13,19 @@ var r, m
 module.exports = (request, midtransPayment) => {
   r = request
   m = midtransPayment
+  console.log("midtransPayment.slug", midtransPayment.slug)
   switch (midtransPayment.slug) {
     case "bni-virtual-account":
       return bni_virtual_account()
     case "mandiri-bill-payment":
       return mandiri_bill_payment()
+    case "bca-virtual-account":
+      return bca_virtual_account()
+    case "permata-virtual-account":
+      return permata_virtual_account()
 
     default:
-      return nul
+      return null
   }
 }
 
@@ -83,3 +88,53 @@ function mandiri_bill_payment() {
   }
   return postData
 }
+
+/**
+ * BCA Virtual Account Post Data
+ * @returns {baseData, bank_transfer}
+ */
+
+function bca_virtual_account() {
+  let postData = getBaseData(r)
+  postData.bank_transfer = {
+    bank: changeCase.lowerCase(m.bank),
+    va_number: strRand(),
+    bca: {
+      sub_company_code: "00000"
+    }
+  }
+  return postData
+}
+
+/**
+ * Permata Virtual Account Post Data
+ * @returns {baseData, bank_transfer}
+ */
+
+function permata_virtual_account() {
+  const { customer_details } = r.post()
+  let postData = getBaseData(r)
+  postData.bank_transfer = {
+    bank: changeCase.lowerCase(m.bank),
+    permata: {
+      recipient_name: `${customer_details.first_name} ${
+        customer_details.last_name
+      }`
+    }
+  }
+  return postData
+}
+
+// {
+//   "payment_type": "bank_transfer",
+//   "bank_transfer": {
+//     "bank": "permata",
+//     "permata": {
+//       "recipient_name": "SUDARSONO"
+//     }
+//   },
+//   "transaction_details": {
+//     "order_id": "H17550",
+//     "gross_amount": 145000
+//   }
+// }
