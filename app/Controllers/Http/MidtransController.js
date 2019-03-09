@@ -29,14 +29,13 @@ class MidtranController {
       console.log("request.hostname()", request.hostname())
 
       const postData = GetMidtransPostData(request, midtransPayment)
-      return response.status(200).send(ResponseParser.successResponse(postData))
-      // const midtransResponse = await core.charge(postData)
+      const midtransResponse = await core.charge(postData)
 
-      // return response
-      //   .status(200)
-      //   .send(
-      //     ResponseParser.successResponse(midtransResponse, "Midtrans Response")
-      //   )
+      return response
+        .status(200)
+        .send(
+          ResponseParser.successResponse(midtransResponse, "Midtrans Response")
+        )
     } catch (e) {
       return response
         .status(400)
