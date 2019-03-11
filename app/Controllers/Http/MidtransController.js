@@ -46,6 +46,7 @@ class MidtranController {
     if (!IsMidtransSign(request)) {
       return response.status(401).send(ResponseParser.unauthorizedResponse())
     }
+    console.log("receivedJson", receivedJson)
     await TransactionLog(request)
     MidtransCore.transaction
       .notification(receivedJson)
