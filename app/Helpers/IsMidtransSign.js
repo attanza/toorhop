@@ -2,6 +2,7 @@
 
 const IsDev = require("./Isdev")
 const crypto = require("crypto")
+const Env = use("Env")
 
 module.exports = request => {
   const receivedJson = request.post()
