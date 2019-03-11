@@ -2,7 +2,8 @@
 
 const TransactionLog = use("App/Models/TransactionLog")
 
-module.exports = async (request, data) => {
+module.exports = async request => {
+  const data = request.post()
   return await TransactionLog.create({
     status_code: data.status_code,
     transaction_id: data.transaction_id,

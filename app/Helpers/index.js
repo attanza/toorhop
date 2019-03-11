@@ -1,13 +1,17 @@
 const ResponseParser = require("./ResponseParser")
-const AesUtil = require("./AesUtil")
 const ErrorLog = require("./ErrorLog")
 const MailHelper = require("./MailHelper")
 const GetMidtransPostData = require("./GetMidtransPostData")
+const IsDev = require("./IsDev")
+const MidtransCore = require("./MidtransCore")
+const IsMidtransSign = require("./IsMidtransSign")
 
 module.exports = {
   ResponseParser,
-  AesUtil,
   ErrorLog,
   MailHelper,
-  GetMidtransPostData
+  GetMidtransPostData,
+  IsDev,
+  MidtransCore,
+  IsMidtransSign
 }
