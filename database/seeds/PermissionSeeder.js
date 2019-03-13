@@ -2,7 +2,7 @@
 
 const changeCase = require("change-case")
 const Permission = use("App/Models/Permission")
-const resources = ["User", "Midtrans Payment"]
+const resources = ["User", "Midtrans Payment", "Payment Instruction"]
 const actions = ["create", "read", "update", "delete"]
 const Database = use("Database")
 

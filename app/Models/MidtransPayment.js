@@ -20,6 +20,10 @@ class MidtransPayment extends Model {
       return `${getBaseUrl()}${this.logo}`
     } else return ""
   }
+
+  instructions() {
+    return this.hasMany("App/Models/PaymentInstruction")
+  }
 }
 
 module.exports = MidtransPayment

@@ -9,7 +9,8 @@ class Client {
   async handle(ctx, next) {
     try {
       const client_key = ctx.request.header("x-toorhop-key")
-      const { date, token } = ctx.request.headers()
+      const date = ctx.request.header("x-toorhop-date")
+      const token = ctx.request.header("x-toorhop-token")
 
       if (!date) {
         console.log("no date") //eslint-disable-line

@@ -19,6 +19,7 @@ Route.group(() => {
  */
 
 Route.group(() => {
+  Route.get("midtrans-payment-list", "MidtransPaymentController.index")
   Route.post("midtrans-charge", "MidtransController.charge").validator(
     "MidtransCharge"
   )

@@ -549,6 +549,87 @@
       ]
     },
     {
+      "name": "Client",
+      "item": [
+        {
+          "name": "Create Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "e8936971-5faf-416d-82aa-1f5bbb5d61a5",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "let resp = pm.response.json();",
+                  "",
+                  "pm.environment.set(\"clientToken\", resp.data.token);",
+                  "pm.environment.set(\"date\", resp.data.date);",
+                  "pm.environment.set(\"client_key\", resp.data.client_key);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"client_key\": \"LFgQNUYugaRy\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/token/create",
+              "host": ["{{baseUrl}}"],
+              "path": ["token", "create"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Extract Token",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-toorhop-date",
+                "value": "{{date}}",
+                "type": "text"
+              },
+              {
+                "key": "x-toorhop-key",
+                "value": "{{client_key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-toorhop-token",
+                "value": "{{clientToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/token/extract",
+              "host": ["{{baseUrl}}"],
+              "path": ["token", "extract"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "Midtrans Payment Type",
       "item": [
         {
@@ -1067,6 +1148,593 @@
             "type": "text/javascript",
             "exec": [""]
           }
+        }
+      ]
+    },
+    {
+      "name": "Midtrans Payment Instruction",
+      "item": [
+        {
+          "name": "List",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "cbb471cb-dc95-4154-bdd7-27d1d8eb91af",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payment-instructions",
+              "host": ["{{baseUrl}}"],
+              "path": ["payment-instructions"]
+            }
+          },
+          "response": [
+            {
+              "name": "List",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/payment-instructions",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["payment-instructions"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "798"
+                },
+                {
+                  "key": "Date",
+                  "value": "Wed, 13 Mar 2019 08:02:21 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"status\": 200,\n        \"message\": \"Data retrieval successfully\",\n        \"total\": 1,\n        \"perPage\": 10,\n        \"page\": 1,\n        \"lastPage\": 1\n    },\n    \"data\": [\n        {\n            \"id\": 1,\n            \"midtrans_payment_id\": 4,\n            \"name\": \"Permata Virtual Account\",\n            \"content\": \"<ol><li>On the main menu, choose <strong>Other Transaction.</strong></li><li>Choose <strong>Payment</strong>.</li><li>Choose&nbsp;<strong>Other Payment</strong>.</li><li>Choose <strong>Virtual Account</strong>.</li><li>Enter 16 digits Account No. and press <strong>Correct</strong>.</li><li>Amount to be paid, account number, and merchant name will appear on the payment confirmation page. If the information is right, press <strong>Correct</strong>.</li><li>Choose your payment account and press <strong>Correct</strong>.</li></ol>\",\n            \"created_at\": \"2019-03-12 23:07:08\",\n            \"updated_at\": \"2019-03-12 23:07:08\"\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Store",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "faa06f86-9d77-4748-8087-c9bcb8752b15",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "let resp = pm.response.json();",
+                  "",
+                  "pm.environment.set(\"resourceId\", resp.data.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"midtrans_payment_id\": 3,\n\t\"name\": \"ATM BCA\",\n\t\"content\": \"<ol><li>On the main menu, choose&nbsp;<strong>Other Transaction</strong>.</li><li>Choose&nbsp;<strong>Transfer</strong>.</li><li>Choose&nbsp;<strong>Transfer To BCA Virtual Account</strong>.</li><li>Enter your&nbsp;<strong>Payment Code</strong>&nbsp;(11 digits code) and press&nbsp;<strong>Correct.</strong></li><li>Enter the full amount to be paid and press&nbsp;<strong>Correct.</strong></li><li>Your payment details will appear on the payment confirmation page. If the information is correct press<strong>&nbsp;Yes.</strong></li></ol>\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payment-instructions",
+              "host": ["{{baseUrl}}"],
+              "path": ["payment-instructions"]
+            }
+          },
+          "response": [
+            {
+              "name": "Store",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"midtrans_payment_id\": 3,\n\t\"name\": \"ATM BCA\",\n\t\"content\": \"<ol><li>On the main menu, choose&nbsp;<strong>Other Transaction</strong>.</li><li>Choose&nbsp;<strong>Transfer</strong>.</li><li>Choose&nbsp;<strong>Transfer To BCA Virtual Account</strong>.</li><li>Enter your&nbsp;<strong>Payment Code</strong>&nbsp;(11 digits code) and press&nbsp;<strong>Correct.</strong></li><li>Enter the full amount to be paid and press&nbsp;<strong>Correct.</strong></li><li>Your payment details will appear on the payment confirmation page. If the information is correct press<strong>&nbsp;Yes.</strong></li></ol>\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/payment-instructions",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["payment-instructions"]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "733"
+                },
+                {
+                  "key": "Date",
+                  "value": "Wed, 13 Mar 2019 08:14:03 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"status\": 201,\n        \"message\": \"Created successfully\"\n    },\n    \"data\": {\n        \"midtrans_payment_id\": 3,\n        \"name\": \"ATM BCA\",\n        \"content\": \"<ol><li>On the main menu, choose&nbsp;<strong>Other Transaction</strong>.</li><li>Choose&nbsp;<strong>Transfer</strong>.</li><li>Choose&nbsp;<strong>Transfer To BCA Virtual Account</strong>.</li><li>Enter your&nbsp;<strong>Payment Code</strong>&nbsp;(11 digits code) and press&nbsp;<strong>Correct.</strong></li><li>Enter the full amount to be paid and press&nbsp;<strong>Correct.</strong></li><li>Your payment details will appear on the payment confirmation page. If the information is correct press<strong>&nbsp;Yes.</strong></li></ol>\",\n        \"created_at\": \"2019-03-13 15:14:03\",\n        \"updated_at\": \"2019-03-13 15:14:03\",\n        \"id\": 2\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Show",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "cbb471cb-dc95-4154-bdd7-27d1d8eb91af",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payment-instructions/{{resourceId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["payment-instructions", "{{resourceId}}"]
+            }
+          },
+          "response": [
+            {
+              "name": "Show",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/payment-instructions/{{resourceId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["payment-instructions", "{{resourceId}}"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "740"
+                },
+                {
+                  "key": "Date",
+                  "value": "Wed, 13 Mar 2019 08:14:27 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"status\": 200,\n        \"message\": \"Data retrieval successfully\"\n    },\n    \"data\": {\n        \"id\": 2,\n        \"midtrans_payment_id\": 3,\n        \"name\": \"ATM BCA\",\n        \"content\": \"<ol><li>On the main menu, choose&nbsp;<strong>Other Transaction</strong>.</li><li>Choose&nbsp;<strong>Transfer</strong>.</li><li>Choose&nbsp;<strong>Transfer To BCA Virtual Account</strong>.</li><li>Enter your&nbsp;<strong>Payment Code</strong>&nbsp;(11 digits code) and press&nbsp;<strong>Correct.</strong></li><li>Enter the full amount to be paid and press&nbsp;<strong>Correct.</strong></li><li>Your payment details will appear on the payment confirmation page. If the information is correct press<strong>&nbsp;Yes.</strong></li></ol>\",\n        \"created_at\": \"2019-03-13 15:14:03\",\n        \"updated_at\": \"2019-03-13 15:14:03\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "faa06f86-9d77-4748-8087-c9bcb8752b15",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"midtrans_payment_id\": 3,\n\t\"name\": \"ATM BCA updated\",\n\t\"content\": \"<ol><li>On the main menu, choose&nbsp;<strong>Other Transaction</strong>.</li><li>Choose&nbsp;<strong>Transfer</strong>.</li><li>Choose&nbsp;<strong>Transfer To BCA Virtual Account</strong>.</li><li>Enter your&nbsp;<strong>Payment Code</strong>&nbsp;(11 digits code) and press&nbsp;<strong>Correct.</strong></li><li>Enter the full amount to be paid and press&nbsp;<strong>Correct.</strong></li><li>Your payment details will appear on the payment confirmation page. If the information is correct press<strong>&nbsp;Yes.</strong></li></ol>\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payment-instructions/{{resourceId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["payment-instructions", "{{resourceId}}"]
+            }
+          },
+          "response": [
+            {
+              "name": "Update",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "name": "Content-Type",
+                    "type": "text",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n\t\"midtrans_payment_id\": 3,\n\t\"name\": \"ATM BCA updated\",\n\t\"content\": \"<ol><li>On the main menu, choose&nbsp;<strong>Other Transaction</strong>.</li><li>Choose&nbsp;<strong>Transfer</strong>.</li><li>Choose&nbsp;<strong>Transfer To BCA Virtual Account</strong>.</li><li>Enter your&nbsp;<strong>Payment Code</strong>&nbsp;(11 digits code) and press&nbsp;<strong>Correct.</strong></li><li>Enter the full amount to be paid and press&nbsp;<strong>Correct.</strong></li><li>Your payment details will appear on the payment confirmation page. If the information is correct press<strong>&nbsp;Yes.</strong></li></ol>\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/payment-instructions/{{resourceId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["payment-instructions", "{{resourceId}}"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "741"
+                },
+                {
+                  "key": "Date",
+                  "value": "Wed, 13 Mar 2019 08:15:15 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"status\": 200,\n        \"message\": \"Updated successfully\"\n    },\n    \"data\": {\n        \"id\": 2,\n        \"midtrans_payment_id\": 3,\n        \"name\": \"ATM BCA updated\",\n        \"content\": \"<ol><li>On the main menu, choose&nbsp;<strong>Other Transaction</strong>.</li><li>Choose&nbsp;<strong>Transfer</strong>.</li><li>Choose&nbsp;<strong>Transfer To BCA Virtual Account</strong>.</li><li>Enter your&nbsp;<strong>Payment Code</strong>&nbsp;(11 digits code) and press&nbsp;<strong>Correct.</strong></li><li>Enter the full amount to be paid and press&nbsp;<strong>Correct.</strong></li><li>Your payment details will appear on the payment confirmation page. If the information is correct press<strong>&nbsp;Yes.</strong></li></ol>\",\n        \"created_at\": \"2019-03-13 15:14:03\",\n        \"updated_at\": \"2019-03-13 15:15:14\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "cbb471cb-dc95-4154-bdd7-27d1d8eb91af",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payment-instructions/{{resourceId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["payment-instructions", "{{resourceId}}"]
+            }
+          },
+          "response": [
+            {
+              "name": "Delete",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": ""
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/payment-instructions/{{resourceId}}",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["payment-instructions", "{{resourceId}}"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "56"
+                },
+                {
+                  "key": "Date",
+                  "value": "Wed, 13 Mar 2019 08:15:34 GMT"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"status\": 200,\n        \"message\": \"Deleted successfully\"\n    }\n}"
+            }
+          ]
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{token}}",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "7502955f-bd5a-4af1-9659-828862533af6",
+            "type": "text/javascript",
+            "exec": [""]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "91a21b10-9d9c-4448-954e-06229271898d",
+            "type": "text/javascript",
+            "exec": [""]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Midtrans",
+      "item": [
+        {
+          "name": "Midtrans Payment List",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              },
+              {
+                "key": "x-toorhop-date",
+                "type": "text",
+                "value": "{{date}}"
+              },
+              {
+                "key": "x-toorhop-key",
+                "type": "text",
+                "value": "{{client_key}}"
+              },
+              {
+                "key": "x-toorhop-token",
+                "type": "text",
+                "value": "{{clientToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/midtrans-payment-list",
+              "host": ["{{baseUrl}}"],
+              "path": ["midtrans-payment-list"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Charge",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "x-toorhop-date",
+                "value": "{{date}}",
+                "type": "text"
+              },
+              {
+                "key": "x-toorhop-key",
+                "value": "{{client_key}}",
+                "type": "text"
+              },
+              {
+                "key": "x-toorhop-token",
+                "value": "{{clientToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"order_id\": \"ABCDEF14\",\n\t\"midtrans_payment_id\": 4,\n\t\"customer_details\": {\n        \"email\": \"budi.utomo@Midtrans.com\",\n        \"first_name\": \"budi\",\n        \"last_name\": \"utomo\",\n        \"phone\": \"+6281 1234 1234\"\n    },\n    \"item_details\": [\n    {\n       \"id\": \"1388998298204\",\n       \"price\": 5000,\n       \"quantity\": 1,\n       \"name\": \"Ayam Zozozo\"\n    },\n    {\n       \"id\": \"1388998298205\",\n       \"price\": 5000,\n       \"quantity\": 1,\n       \"name\": \"Ayam Xoxoxo\"\n    }\n   ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/midtrans-charge",
+              "host": ["{{baseUrl}}"],
+              "path": ["midtrans-charge"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Notification Handler",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"transaction_time\": \"2019-03-08 22:20:51\",\n    \"transaction_status\": \"expire\",\n    \"transaction_id\": \"446ae131-af30-4689-98c4-5b2ff992ebc0\",\n    \"status_message\": \"midtrans payment notification\",\n    \"status_code\": \"202\",\n    \"signature_key\": \"5baffda57b9338f7e11c786c1b560e17e08c504acc740ebb09aaaabc87a1c658dd9473fa036e4c90da0b2cfa7264123db4fd72897bee37bee81c9d6d38fe6603\",\n    \"payment_type\": \"bank_transfer\",\n    \"payment_amounts\": [],\n    \"order_id\": \"ABCDEF1\",\n    \"gross_amount\": \"10000.00\",\n    \"fraud_status\": \"accept\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/midtrans-notification-handler",
+              "host": ["{{baseUrl}}"],
+              "path": ["midtrans-notification-handler"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Transaction Log",
+      "item": [
+        {
+          "name": "List",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/transaction-logs",
+              "host": ["{{baseUrl}}"],
+              "path": ["transaction-logs"]
+            }
+          },
+          "response": []
         }
       ]
     }

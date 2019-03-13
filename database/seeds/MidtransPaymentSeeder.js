@@ -10,25 +10,29 @@ class MidtransPaymentSeeder {
         name: "BNI Virtual Account",
         bank: "BNI",
         transaction_type: "Bank Transfer",
-        payment_type: "bank_transfer"
+        payment_type: "bank_transfer",
+        description: "Pay from BNI ATM's or internet banking"
       },
       {
         name: "Mandiri Bill Payment",
         bank: "Mandiri",
         transaction_type: "Bank Transfer",
-        payment_type: "echannel"
+        payment_type: "echannel",
+        description: "Pay from Mandiri ATM's or internet banking"
       },
       {
         name: "BCA Virtual Account",
         bank: "BCA",
         transaction_type: "Bank Transfer",
-        payment_type: "bank_transfer"
+        payment_type: "bank_transfer",
+        description: "Pay from BCA ATM's or internet banking"
       },
       {
         name: "Permata Virtual Account",
         bank: "Permata",
         transaction_type: "Bank Transfer",
-        payment_type: "bank_transfer"
+        payment_type: "bank_transfer",
+        description: "Pay from Permata ATM's or internet banking"
       }
     ]
     await MidtransPayment.createMany(payments)

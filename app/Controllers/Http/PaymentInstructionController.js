@@ -1,21 +1,20 @@
 "use strict"
 
-const MidtransPayment = use("App/Models/MidtransPayment")
+const PaymentInstruction = use("App/Models/PaymentInstruction")
 const { ResponseParser, ErrorLog } = use("App/Helpers")
 const { ActivityTraits } = use("App/Traits")
-const Helpers = use("Helpers")
-const Drive = use("Drive")
-const fillable = ["name", "bank", "transaction_type", "payment_type"]
+const Database = use("Database")
+const fillable = ["midtrans_payment_id", "name", "content"]
 
 /**
- * MidtransPaymentController
+ * PaymentInstructionController
  *
  */
 
-class MidtransPaymentController {
+class PaymentInstructionController {
   /**
    * Index
-   * Get List of MidtransPayments
+   * Get List of PaymentInstructions
    */
   async index({ request, response }) {
     try {
@@ -37,14 +36,10 @@ class MidtransPaymentController {
       if (!sort_by) sort_by = "id"
       if (!sort_mode) sort_mode = "desc"
 
-      const data = await MidtransPayment.query()
-        .with("instructions")
+      const data = await PaymentInstruction.query()
         .where(function() {
           if (search && search != "") {
             this.where("name", "like", `%${search}%`)
-            this.orWhere("bank", "like", `%${search}%`)
-            this.orWhere("transaction_type", "like", `%${search}%`)
-            this.orWhere("payment_type", "like", `%${search}%`)
           }
 
           if (search_by && search_query) {
@@ -67,15 +62,25 @@ class MidtransPaymentController {
   }
   /**
    * Store
-   * Store New MidtransPayments
+   * Store New PaymentInstructions
    *
    */
   async store({ request, response, auth }) {
     try {
       let body = request.only(fillable)
-      const data = await MidtransPayment.create(body)
-      await this.uploadLogo(request, data)
-      const activity = `Add new Midtrans Payment '${data.slug}'`
+      // Validate midtrans payment id exists
+      const row = await Database.table("midtrans_payments")
+        .where("id", body.midtrans_payment_id)
+        .first()
+      if (!row) {
+        return response
+          .status(422)
+          .send(
+            ResponseParser.apiValidationFailed("Midtrans payment not exists")
+          )
+      }
+      const data = await PaymentInstruction.create(body)
+      const activity = `Add new Midtrans Payment Instruction '${data.name}'`
       await ActivityTraits.saveActivity(request, auth, activity)
       let parsed = ResponseParser.apiCreated(data.toJSON())
       return response.status(201).send(parsed)
@@ -87,12 +92,12 @@ class MidtransPaymentController {
 
   /**
    * Show
-   * MidtransPayment by id
+   * PaymentInstruction by id
    */
   async show({ request, response }) {
     try {
       const id = request.params.id
-      const data = await MidtransPayment.find(id)
+      const data = await PaymentInstruction.find(id)
       if (!data) {
         return response.status(400).send(ResponseParser.apiNotFound())
       }
@@ -106,21 +111,31 @@ class MidtransPaymentController {
 
   /**
    * Update
-   * Update MidtransPayment by Id
+   * Update PaymentInstruction by Id
    */
   async update({ request, response, auth }) {
     try {
       let body = request.only(fillable)
+      // Validate midtrans payment id exists
+      const row = await Database.table("midtrans_payments")
+        .where("id", body.midtrans_payment_id)
+        .first()
+      if (!row) {
+        return response
+          .status(422)
+          .send(
+            ResponseParser.apiValidationFailed("Midtrans payment not exists")
+          )
+      }
       const id = request.params.id
-      const data = await MidtransPayment.find(id)
+      const data = await PaymentInstruction.find(id)
       if (!data || data.length === 0) {
         return response.status(400).send(ResponseParser.apiNotFound())
       }
       await data.merge(body)
       await data.save()
-      const activity = `Update Midtrans Payment '${data.slug}'`
+      const activity = `Update Midtrans Payment Instruction '${data.name}'`
       await ActivityTraits.saveActivity(request, auth, activity)
-      await this.uploadLogo(request, data)
       let parsed = ResponseParser.apiUpdated(data.toJSON())
       return response.status(200).send(parsed)
     } catch (e) {
@@ -131,24 +146,17 @@ class MidtransPaymentController {
 
   /**
    * Delete
-   * Delete MidtransPayment by Id
+   * Delete PaymentInstruction by Id
    */
   async destroy({ request, response, auth }) {
     try {
       const id = request.params.id
-      const data = await MidtransPayment.find(id)
+      const data = await PaymentInstruction.find(id)
       if (!data) {
         return response.status(400).send(ResponseParser.apiNotFound())
       }
 
-      if (data.logo) {
-        let exists = await Drive.exists(Helpers.publicPath(data.logo))
-        if (exists) {
-          await Drive.delete(Helpers.publicPath(data.logo))
-        }
-      }
-
-      const activity = `Delete Midtrans Payment '${data.slug}'`
+      const activity = `Delete Midtrans Payment Instruction '${data.name}'`
       await ActivityTraits.saveActivity(request, auth, activity)
 
       await data.delete()
@@ -158,38 +166,6 @@ class MidtransPaymentController {
       return response.status(error.status).send({ meta: error.meta })
     }
   }
-
-  /**
-   * @param {file} logo
-   * @returns Midtrans Payment data
-   */
-
-  async uploadLogo(request, midatransData) {
-    try {
-      const logo = request.file("logo", {
-        types: ["image"],
-        size: "5mb"
-      })
-
-      if (!logo) {
-        return
-      }
-      const name = `${new Date().getTime()}.${logo.subtype}`
-
-      await logo.move(Helpers.publicPath("img/bank_logos"), { name })
-
-      if (!logo.moved()) {
-        throw { message: "logo failed to upload", status: 400 }
-      }
-      await midatransData.merge({ logo: `/img/bank_logos/${name}` })
-      await midatransData.save()
-      const activity = `Upload Midtrans Payment logo '${data.slug}'`
-      await ActivityTraits.saveActivity(request, auth, activity)
-      return midatransData
-    } catch (e) {
-      throw e
-    }
-  }
 }
 
-module.exports = MidtransPaymentController
+module.exports = PaymentInstructionController
