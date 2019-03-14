@@ -39,8 +39,21 @@
               }
             ],
             "body": {
-              "mode": "raw",
-              "raw": "{\n  \"username\": \"{{adminUser}}\",\n  \"password\": \"{{adminPassword}}\"\n}"
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "username",
+                  "value": "{{adminUser}}",
+                  "description": "User username",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "{{adminPassword}}",
+                  "description": "User password",
+                  "type": "text"
+                }
+              ]
             },
             "url": {
               "raw": "{{baseUrl}}/login",
@@ -159,7 +172,8 @@
               "raw": "{{baseUrl}}/users",
               "host": ["{{baseUrl}}"],
               "path": ["users"]
-            }
+            },
+            "description": "Get Users / Clients list."
           },
           "response": [
             {
@@ -233,8 +247,33 @@
               }
             ],
             "body": {
-              "mode": "raw",
-              "raw": "{\n\t\"username\": \"attanza\",\n\t\"client\": \"Attanza\",\n\t\"password\": \"password\",\n\t\"role_id\": 2\n}"
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "username",
+                  "value": "exampleUsername",
+                  "description": "required|unique",
+                  "type": "text"
+                },
+                {
+                  "key": "client",
+                  "value": "exampleClient",
+                  "description": "required|unique",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "password",
+                  "description": "required|min:6",
+                  "type": "text"
+                },
+                {
+                  "key": "role_id",
+                  "value": "2",
+                  "description": "required|integer|in:1,2",
+                  "type": "text"
+                }
+              ]
             },
             "url": {
               "raw": "{{baseUrl}}/users",
@@ -256,8 +295,33 @@
                   }
                 ],
                 "body": {
-                  "mode": "raw",
-                  "raw": "{\n\t\"username\": \"attanza\",\n\t\"client\": \"Attanza\",\n\t\"password\": \"password\",\n\t\"role_id\": 2\n}"
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "username",
+                      "value": "exampleUsername",
+                      "description": "required|unique",
+                      "type": "text"
+                    },
+                    {
+                      "key": "client",
+                      "value": "exampleClient",
+                      "description": "required|unique",
+                      "type": "text"
+                    },
+                    {
+                      "key": "password",
+                      "value": "password",
+                      "description": "required|min:6",
+                      "type": "text"
+                    },
+                    {
+                      "key": "role_id",
+                      "value": "2",
+                      "description": "required|integer|in:1,2",
+                      "type": "text"
+                    }
+                  ]
                 },
                 "url": {
                   "raw": "{{baseUrl}}/users",
@@ -275,11 +339,11 @@
                 },
                 {
                   "key": "Content-Length",
-                  "value": "436"
+                  "value": "450"
                 },
                 {
                   "key": "Date",
-                  "value": "Thu, 28 Feb 2019 16:33:06 GMT"
+                  "value": "Thu, 14 Mar 2019 16:14:10 GMT"
                 },
                 {
                   "key": "Connection",
@@ -287,7 +351,7 @@
                 }
               ],
               "cookie": [],
-              "body": "{\n    \"meta\": {\n        \"status\": 201,\n        \"message\": \"Created successfully\"\n    },\n    \"data\": {\n        \"username\": \"attanza\",\n        \"client\": \"Attanza\",\n        \"client_key\": \"vZOhKZQhFnah\",\n        \"secret\": \"2bc9318702322a77dee7c883c1ffff4359769169\",\n        \"created_at\": \"2019-02-28 23:33:06\",\n        \"updated_at\": \"2019-02-28 23:33:06\",\n        \"id\": 7,\n        \"roles\": [\n            {\n                \"id\": 2,\n                \"slug\": \"client\",\n                \"name\": \"Client\",\n                \"description\": null,\n                \"created_at\": \"2019-02-28 22:46:13\",\n                \"updated_at\": \"2019-02-28 22:46:13\",\n                \"pivot\": {\n                    \"role_id\": 2,\n                    \"user_id\": 7\n                }\n            }\n        ]\n    }\n}"
+              "body": "{\n    \"meta\": {\n        \"status\": 201,\n        \"message\": \"Created successfully\"\n    },\n    \"data\": {\n        \"username\": \"exampleUsername\",\n        \"client\": \"exampleClient\",\n        \"client_key\": \"zGrXDhpGQGmm\",\n        \"secret\": \"f8fb6e91db52a8e2fb2a0281b5b887ba894905ed\",\n        \"created_at\": \"2019-03-14 23:14:10\",\n        \"updated_at\": \"2019-03-14 23:14:10\",\n        \"id\": 4,\n        \"roles\": [\n            {\n                \"id\": 2,\n                \"slug\": \"client\",\n                \"name\": \"Client\",\n                \"description\": null,\n                \"created_at\": \"2019-03-13 22:33:46\",\n                \"updated_at\": \"2019-03-13 22:33:46\",\n                \"pivot\": {\n                    \"role_id\": 2,\n                    \"user_id\": 4\n                }\n            }\n        ]\n    }\n}"
             }
           ]
         },
@@ -356,11 +420,11 @@
                 },
                 {
                   "key": "Content-Length",
-                  "value": "457"
+                  "value": "471"
                 },
                 {
                   "key": "Date",
-                  "value": "Thu, 28 Feb 2019 16:33:54 GMT"
+                  "value": "Thu, 14 Mar 2019 16:14:33 GMT"
                 },
                 {
                   "key": "Connection",
@@ -368,7 +432,7 @@
                 }
               ],
               "cookie": [],
-              "body": "{\n    \"meta\": {\n        \"status\": 200,\n        \"message\": \"Data retrieval successfully\"\n    },\n    \"data\": {\n        \"id\": 7,\n        \"username\": \"attanza\",\n        \"client\": \"Attanza\",\n        \"client_key\": \"vZOhKZQhFnah\",\n        \"secret\": \"2bc9318702322a77dee7c883c1ffff4359769169\",\n        \"is_active\": 0,\n        \"created_at\": \"2019-02-28 23:33:06\",\n        \"updated_at\": \"2019-02-28 23:33:06\",\n        \"roles\": [\n            {\n                \"id\": 2,\n                \"slug\": \"client\",\n                \"name\": \"Client\",\n                \"description\": null,\n                \"created_at\": \"2019-02-28 22:46:13\",\n                \"updated_at\": \"2019-02-28 22:46:13\",\n                \"pivot\": {\n                    \"role_id\": 2,\n                    \"user_id\": 7\n                }\n            }\n        ]\n    }\n}"
+              "body": "{\n    \"meta\": {\n        \"status\": 200,\n        \"message\": \"Data retrieval successfully\"\n    },\n    \"data\": {\n        \"id\": 4,\n        \"username\": \"exampleUsername\",\n        \"client\": \"exampleClient\",\n        \"client_key\": \"zGrXDhpGQGmm\",\n        \"secret\": \"f8fb6e91db52a8e2fb2a0281b5b887ba894905ed\",\n        \"is_active\": 0,\n        \"created_at\": \"2019-03-14 23:14:10\",\n        \"updated_at\": \"2019-03-14 23:14:10\",\n        \"roles\": [\n            {\n                \"id\": 2,\n                \"slug\": \"client\",\n                \"name\": \"Client\",\n                \"description\": null,\n                \"created_at\": \"2019-03-13 22:33:46\",\n                \"updated_at\": \"2019-03-13 22:33:46\",\n                \"pivot\": {\n                    \"role_id\": 2,\n                    \"user_id\": 4\n                }\n            }\n        ]\n    }\n}"
             }
           ]
         },
@@ -400,8 +464,33 @@
               }
             ],
             "body": {
-              "mode": "raw",
-              "raw": "{\n\t\"username\": \"attanza2\",\n\t\"client\": \"Attanza\",\n\t\"password\": \"password\",\n\t\"role_id\": 2,\n\t\"is_active\": 1\n}"
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "username",
+                  "value": "editedUsername",
+                  "description": "required|unique",
+                  "type": "text"
+                },
+                {
+                  "key": "client",
+                  "value": "exampleClient",
+                  "description": "required|unique",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "password",
+                  "description": "required|unique",
+                  "type": "text"
+                },
+                {
+                  "key": "role_id",
+                  "value": "2",
+                  "description": "required|integer|in:1,2",
+                  "type": "text"
+                }
+              ]
             },
             "url": {
               "raw": "{{baseUrl}}/users/{{resourceId}}",
@@ -423,8 +512,29 @@
                   }
                 ],
                 "body": {
-                  "mode": "raw",
-                  "raw": "{\n\t\"username\": \"attanza2\",\n\t\"client\": \"Attanza\",\n\t\"password\": \"password\",\n\t\"role_id\": 2,\n\t\"is_active\": 1\n}"
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "username",
+                      "value": "editedUsername",
+                      "type": "text"
+                    },
+                    {
+                      "key": "client",
+                      "value": "exampleClient",
+                      "type": "text"
+                    },
+                    {
+                      "key": "password",
+                      "value": "password",
+                      "type": "text"
+                    },
+                    {
+                      "key": "role_id",
+                      "value": "2",
+                      "type": "text"
+                    }
+                  ]
                 },
                 "url": {
                   "raw": "{{baseUrl}}/users/{{resourceId}}",
@@ -442,11 +552,11 @@
                 },
                 {
                   "key": "Content-Length",
-                  "value": "451"
+                  "value": "449"
                 },
                 {
                   "key": "Date",
-                  "value": "Thu, 28 Feb 2019 16:42:59 GMT"
+                  "value": "Thu, 14 Mar 2019 16:15:11 GMT"
                 },
                 {
                   "key": "Connection",
@@ -454,7 +564,7 @@
                 }
               ],
               "cookie": [],
-              "body": "{\n    \"meta\": {\n        \"status\": 200,\n        \"message\": \"Updated successfully\"\n    },\n    \"data\": {\n        \"id\": 7,\n        \"username\": \"attanza2\",\n        \"client\": \"Attanza\",\n        \"client_key\": \"vZOhKZQhFnah\",\n        \"secret\": \"2bc9318702322a77dee7c883c1ffff4359769169\",\n        \"is_active\": 1,\n        \"created_at\": \"2019-02-28 23:33:06\",\n        \"updated_at\": \"2019-02-28 23:42:59\",\n        \"roles\": [\n            {\n                \"id\": 2,\n                \"slug\": \"client\",\n                \"name\": \"Client\",\n                \"description\": null,\n                \"created_at\": \"2019-02-28 22:46:13\",\n                \"updated_at\": \"2019-02-28 22:46:13\",\n                \"pivot\": {\n                    \"role_id\": 2,\n                    \"user_id\": 7\n                }\n            }\n        ]\n    }\n}"
+              "body": "{\n    \"meta\": {\n        \"status\": 200,\n        \"message\": \"Updated successfully\"\n    },\n    \"data\": {\n        \"id\": 4,\n        \"username\": \"editedUsername\",\n        \"client\": \"exampleClient\",\n        \"client_key\": \"zGrXDhpGQGmm\",\n        \"secret\": \"f8fb6e91db52a8e2fb2a0281b5b887ba894905ed\",\n        \"created_at\": \"2019-03-14 23:14:10\",\n        \"updated_at\": \"2019-03-14 23:15:11\",\n        \"roles\": [\n            {\n                \"id\": 2,\n                \"slug\": \"client\",\n                \"name\": \"Client\",\n                \"description\": null,\n                \"created_at\": \"2019-03-13 22:33:46\",\n                \"updated_at\": \"2019-03-13 22:33:46\",\n                \"pivot\": {\n                    \"role_id\": 2,\n                    \"user_id\": 4\n                }\n            }\n        ]\n    }\n}"
             }
           ]
         },
@@ -605,8 +715,15 @@
               }
             ],
             "body": {
-              "mode": "raw",
-              "raw": "{\n\t\"client_key\": \"LFgQNUYugaRy\"\n}"
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "client_key",
+                  "value": "{{client_key}}",
+                  "description": "required",
+                  "type": "text"
+                }
+              ]
             },
             "url": {
               "raw": "{{baseUrl}}/token/create",
@@ -892,21 +1009,25 @@
                 {
                   "key": "name",
                   "value": "Mandiri Bill Payment",
+                  "description": "required|unique",
                   "type": "text"
                 },
                 {
                   "key": "bank",
                   "value": "Mandiri",
+                  "description": "required",
                   "type": "text"
                 },
                 {
                   "key": "transaction_type",
                   "value": "Bank Transfer",
+                  "description": "required",
                   "type": "text"
                 },
                 {
                   "key": "payment_type",
                   "value": "echannel",
+                  "description": "required",
                   "type": "text"
                 }
               ]
@@ -1080,25 +1201,30 @@
                 {
                   "key": "name",
                   "value": "Mandiri Bill Payment",
+                  "description": "required|unique",
                   "type": "text"
                 },
                 {
                   "key": "bank",
                   "value": "Mandiri",
+                  "description": "required",
                   "type": "text"
                 },
                 {
                   "key": "transaction_type",
                   "value": "Bank Transfer",
+                  "description": "required",
                   "type": "text"
                 },
                 {
                   "key": "payment_type",
                   "value": "echannel",
+                  "description": "required",
                   "type": "text"
                 },
                 {
                   "key": "logo",
+                  "description": "file",
                   "type": "file",
                   "src": ""
                 }
