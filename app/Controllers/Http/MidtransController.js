@@ -5,7 +5,8 @@ const {
   ResponseParser,
   GetMidtransPostData,
   MidtransCore,
-  IsMidtransSign
+  IsMidtransSign,
+  fakeResponse
 } = use("App/Helpers")
 const { TransactionLog } = use("App/Traits")
 
@@ -22,6 +23,7 @@ class MidtranController {
       const core = MidtransCore(request)
 
       const postData = GetMidtransPostData(request, midtransPayment)
+      // const postData = fakeResponse(midtransPayment.bank)
       // return response
       //   .status(200)
       //   .send(ResponseParser.successResponse(postData, "post data"))

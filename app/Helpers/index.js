@@ -5,6 +5,7 @@ const GetMidtransPostData = require("./GetMidtransPostData")
 const IsDev = require("./IsDev")
 const MidtransCore = require("./MidtransCore")
 const IsMidtransSign = require("./IsMidtransSign")
+const fakeResponse = require("./fakeResponse")
 
 module.exports = {
   ResponseParser,
@@ -13,5 +14,6 @@ module.exports = {
   GetMidtransPostData,
   IsDev,
   MidtransCore,
-  IsMidtransSign
+  IsMidtransSign,
+  fakeResponse
 }

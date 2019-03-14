@@ -2,7 +2,9 @@
 
 const Route = use("Route")
 
-Route.get("/", "DocumentController.index")
+Route.on("/").render("welcome")
+
+Route.get("/docs", "DocumentController.index")
 
 require("./routing/dev")
 require("./routing/prod")

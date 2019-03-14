@@ -6,7 +6,7 @@
       :id="generateCssId(item.name)"
       style="width: 100%;"
     >
-      <v-expansion-panel>
+      <v-expansion-panel class="elevation-0">
         <v-expansion-panel-content>
           <div slot="header">
             <h2>
@@ -74,8 +74,8 @@
 </template>
 
 <script>
-import changeCase from "change-case";
-import VueMarkdown from "vue-markdown";
+import changeCase from "change-case"
+import VueMarkdown from "vue-markdown"
 
 export default {
   components: { VueMarkdown },
@@ -87,43 +87,43 @@ export default {
   },
   methods: {
     generateCssId(text) {
-      return changeCase.snakeCase(text).toString();
+      return changeCase.snakeCase(text).toString()
     },
     getColor(method) {
       switch (method) {
         case "GET":
-          return "primary";
+          return "primary"
         case "POST":
-          return "success";
+          return "success"
         case "PUT":
-          return "orange";
+          return "orange"
         case "DELETE":
-          return "red";
+          return "red"
 
         default:
-          return "primary";
+          return "primary"
       }
     },
     parseJson(str) {
       try {
-        return JSON.parse(str);
+        return JSON.parse(str)
       } catch (e) {
-        return str;
+        return str
       }
     },
     getResponse(response) {
       if (response && response[0].body) {
-        return this.parseJson(response[0].body);
+        return this.parseJson(response[0].body)
       } else if (response && response[1].body) {
-        return this.parseJson(response[1].body);
+        return this.parseJson(response[1].body)
       } else if (response && response[2].body) {
-        return this.parseJson(response[2].body);
+        return this.parseJson(response[2].body)
       } else {
-        return "";
+        return ""
       }
     }
   }
-};
+}
 </script>
 
 <style scoped>

@@ -7,7 +7,7 @@
       class="mt-2"
       style="width: 100%;"
     >
-      <v-expansion-panel>
+      <v-expansion-panel class="elevation-0">
         <v-expansion-panel-content>
           <div slot="header">
             <h1>{{ endpoints.name }}</h1>
@@ -25,9 +25,9 @@
 </template>
 
 <script>
-import changeCase from "change-case";
-import endpoint from "./endpoint";
-import VueMarkdown from "vue-markdown";
+import changeCase from "change-case"
+import endpoint from "./endpoint"
+import VueMarkdown from "vue-markdown"
 
 export default {
   components: { endpoint, VueMarkdown },
@@ -39,10 +39,10 @@ export default {
   },
   methods: {
     generateCssId(text) {
-      return changeCase.snakeCase(text).toString();
+      return changeCase.snakeCase(text).toString()
     }
   }
-};
+}
 </script>
 
 <style scoped>

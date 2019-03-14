@@ -7,7 +7,7 @@
       fixed
       app
     >
-      <v-toolbar color="grey lighten-4">
+      <v-toolbar color="grey lighten-4" class="elevation-0">
         <v-list>
           <v-list-tile>
             <!-- <img src="/img/logo.png" alt="" width="80%"> -->
@@ -77,10 +77,10 @@
 </template>
 
 <script>
-import docs from "../../../../docs.json";
-import changeCase from "change-case";
-import AllEndpoints from "./AllEndpoints";
-import VueMarkdown from "vue-markdown";
+import docs from "../../../../docs.json"
+import changeCase from "change-case"
+import AllEndpoints from "./AllEndpoints"
+import VueMarkdown from "vue-markdown"
 
 export default {
   components: {
@@ -99,7 +99,7 @@ export default {
       title: "",
       offsetTop: 0,
       description: ""
-    };
+    }
   },
   computed: {
     options() {
@@ -107,24 +107,24 @@ export default {
         duration: 700,
         offset: -100,
         easing: "easeInOutCubic"
-      };
+      }
     }
   },
   mounted() {
-    this.title = docs.info.name;
-    this.description = docs.info.description || "";
-    this.items = docs.item || [];
+    this.title = docs.info.name
+    this.description = docs.info.description || ""
+    this.items = docs.item || []
   },
   methods: {
     generateLink(text) {
-      return "#" + changeCase.snakeCase(text);
+      return "#" + changeCase.snakeCase(text)
     },
     generateTarget(text) {
-      return changeCase.snakeCase(text);
+      return changeCase.snakeCase(text)
     },
     onScroll() {
-      this.offsetTop = window.pageYOffset || document.documentElement.scrollTop;
+      this.offsetTop = window.pageYOffset || document.documentElement.scrollTop
     }
   }
-};
+}
 </script>

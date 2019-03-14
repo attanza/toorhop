@@ -27,19 +27,19 @@ class MidtransInstructionSeeder {
         midtrans_payment_id: 3,
         name: "m-BCA",
         content:
-          "<ol><li>Log in to your&nbsp;<strong>BCA Mobile</strong>&nbsp;app.</li><li>Choose&nbsp;<strong>m-BCA</strong>, then input your&nbsp;<strong>m-BCA access code.</strong></li><li>Choose&nbsp;<strong>m-Transfer</strong>, then choose BCA Virtual Account.</li><li>Input&nbsp;<strong>Virtual Account Number</strong>&nbsp;or choose an existing account from&nbsp;<strong>Daftar Transfer.</strong></li><li>Input the&nbsp;<strong>payable amount.</strong></li><li>Input your&nbsp;<strong>m-BCA pin.</strong></li><li>Payment is finished. Save the notification as your payment receipt.</li></ol><p>&nbsp;</p><p>&nbsp;</p>"
+          "<ol><li>Log in to your&nbsp;<strong>BCA Mobile</strong>&nbsp;app.</li><li>Choose&nbsp;<strong>m-BCA</strong>, then input your&nbsp;<strong>m-BCA access code.</strong></li><li>Choose&nbsp;<strong>m-Transfer</strong>, then choose BCA Virtual Account.</li><li>Input&nbsp;<strong>Virtual Account Number</strong>&nbsp;or choose an existing account from&nbsp;<strong>Daftar Transfer.</strong></li><li>Input the&nbsp;<strong>payable amount.</strong></li><li>Input your&nbsp;<strong>m-BCA pin.</strong></li><li>Payment is finished. Save the notification as your payment receipt.</li></ol>"
       },
       {
         midtrans_payment_id: 2,
         name: "ATM Mandiri",
         content:
-          "<ol><li>On the main menu, choose&nbsp;<strong>Pay/Buy.</strong></li><li>Choose&nbsp;<strong>Others.</strong></li><li>Choose&nbsp;<strong>Multi Payment.</strong></li><li>Enter 70012 (Midtrans company code) and press&nbsp;<strong>Correct.</strong></li><li>Enter your Payment Code and press&nbsp;<strong>Correct.</strong></li><li>Your payment details will appear on the payment confirmation page. If the information is correct press&nbsp;<strong>Yes.</strong></li></ol><p>&nbsp;</p><p>&nbsp;</p>"
+          "<ol><li>On the main menu, choose&nbsp;<strong>Pay/Buy.</strong></li><li>Choose&nbsp;<strong>Others.</strong></li><li>Choose&nbsp;<strong>Multi Payment.</strong></li><li>Enter 70012 (Midtrans company code) and press&nbsp;<strong>Correct.</strong></li><li>Enter your Payment Code and press&nbsp;<strong>Correct.</strong></li><li>Your payment details will appear on the payment confirmation page. If the information is correct press&nbsp;<strong>Yes.</strong></li></ol>"
       },
       {
         midtrans_payment_id: 2,
         name: "Internet Banking",
         content:
-          "<ol><li>Login to Mandiri Internet Banking (https://ib.bankmandiri.co.id/).</li><li>From the main menu choose&nbsp;<strong>Payment</strong>, then choose&nbsp;<strong>Multi Payment.</strong></li><li>Select your account in&nbsp;<strong>From Account</strong>, then in&nbsp;<strong>Billing Name</strong>&nbsp;select&nbsp;<strong>Midtrans.</strong></li><li>Enter the&nbsp;<strong>Payment Code</strong>&nbsp;and you will receive your payment details.</li><li>Confirm your payment using your Mandiri Token.</li></ol><p>&nbsp;</p><p>&nbsp;</p>"
+          "<ol><li>Login to Mandiri Internet Banking (https://ib.bankmandiri.co.id/).</li><li>From the main menu choose&nbsp;<strong>Payment</strong>, then choose&nbsp;<strong>Multi Payment.</strong></li><li>Select your account in&nbsp;<strong>From Account</strong>, then in&nbsp;<strong>Billing Name</strong>&nbsp;select&nbsp;<strong>Midtrans.</strong></li><li>Enter the&nbsp;<strong>Payment Code</strong>&nbsp;and you will receive your payment details.</li><li>Confirm your payment using your Mandiri Token.</li></ol>"
       },
       {
         midtrans_payment_id: 1,
