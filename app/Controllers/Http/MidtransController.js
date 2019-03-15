@@ -29,36 +29,44 @@ class MidtranController {
       }
       const { order_id } = request.post()
       const core = MidtransCore(request)
+      let result = null
       switch (method) {
         case "status":
-          return await core.transaction.status(order_id)
-
-        case "statusb2b":
-          return await core.transaction.statusb2b(order_id)
+          result = await core.transaction.status(order_id)
+          break
 
         case "approve":
-          return await core.transaction.approve(order_id)
+          result = await core.transaction.approve(order_id)
+          break
 
         case "deny":
-          return await core.transaction.deny(order_id)
+          result = await core.transaction.deny(order_id)
+          break
 
         case "status":
-          return await core.transaction.status(order_id)
+          result = await core.transaction.status(order_id)
+          break
 
         case "cancel":
-          return await core.transaction.cancel(order_id)
+          result = await core.transaction.cancel(order_id)
+          break
 
         case "expire":
-          return await core.transaction.expire(order_id)
+          result = await core.transaction.expire(order_id)
+          break
 
         case "refund":
-          return await core.transaction.refund(order_id)
+          result = await core.transaction.refund(order_id)
+          break
 
         default:
           return response
             .status(400)
             .send(ResponseParser.errorResponse("Unknown method"))
       }
+      return response
+        .status(200)
+        .send(ResponseParser.successResponse(result, `Midtrans ${method}`))
     } catch (e) {
       console.log("e", e)
       if (e.error) {

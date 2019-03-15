@@ -61,7 +61,7 @@
                   </div>
                 </v-flex>
                 <v-flex xs12 style="overflow-x:auto;" class="mt-4">
-                  <h3 class="mb-3">Response:</h3>
+                  <h3 class="mb-3">Response example:</h3>
                   <pre><code>{{ getResponse(item.response) }}</code></pre>
                 </v-flex>
               </v-layout>
@@ -112,15 +112,20 @@ export default {
       }
     },
     getResponse(response) {
-      if (response && response[0].body) {
-        return this.parseJson(response[0].body)
-      } else if (response && response[1].body) {
-        return this.parseJson(response[1].body)
-      } else if (response && response[2].body) {
-        return this.parseJson(response[2].body)
-      } else {
-        return ""
+      let output = []
+      if (response && response.length) {
+        response.map(r => output.push(this.parseJson(r.body)))
       }
+      return output
+      // if (response && response[0].body) {
+      //   return this.parseJson(response[0].body)
+      // } else if (response && response[1].body) {
+      //   return this.parseJson(response[1].body)
+      // } else if (response && response[2].body) {
+      //   return this.parseJson(response[2].body)
+      // } else {
+      //   return ""
+      // }
     }
   }
 }
