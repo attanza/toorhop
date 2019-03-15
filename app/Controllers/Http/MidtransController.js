@@ -9,8 +9,79 @@ const {
   fakeResponse
 } = use("App/Helpers")
 const { TransactionLog } = use("App/Traits")
-
+const { validate } = use("Validator")
+let isValid = false
+let validationErrors = null
 class MidtranController {
+  async index({ request, response }) {
+    try {
+      const defaultRules = { order_id: "required" }
+      const refundRules = { amount: "required|number", reason: "required" }
+      isValid = await this.defaultValidation(request.all(), defaultRules)
+      const { method } = request.params
+
+      if (method === "refund")
+        isValid = await this.defaultValidation(request.all(), refundRules)
+      if (!isValid) {
+        return response
+          .status(422)
+          .send(ResponseParser.apiValidationFailed(validationErrors))
+      }
+      const { order_id } = request.post()
+      const core = MidtransCore(request)
+      switch (method) {
+        case "status":
+          return await core.transaction.status(order_id)
+
+        case "statusb2b":
+          return await core.transaction.statusb2b(order_id)
+
+        case "approve":
+          return await core.transaction.approve(order_id)
+
+        case "deny":
+          return await core.transaction.deny(order_id)
+
+        case "status":
+          return await core.transaction.status(order_id)
+
+        case "cancel":
+          return await core.transaction.cancel(order_id)
+
+        case "expire":
+          return await core.transaction.expire(order_id)
+
+        case "refund":
+          return await core.transaction.refund(order_id)
+
+        default:
+          return response
+            .status(400)
+            .send(ResponseParser.errorResponse("Unknown method"))
+      }
+    } catch (e) {
+      console.log("e", e)
+      if (e.error) {
+        return response
+          .status(422)
+          .send(ResponseParser.apiValidationFailed(e.message))
+      }
+      return response
+        .status(400)
+        .send(ResponseParser.errorResponse(e.ApiResponse || "Operation failed"))
+    }
+  }
+
+  // Refund Transaction
+  // let parameter = {
+  //     "amount": 5000,
+  //     "reason": "Item out of stock"
+  // }
+  // apiClient.transaction.refund('YOUR_ORDER_ID OR TRANSACTION_ID',parameter)
+  //     .then((response)=>{
+  //         // do something to `response` object
+  //     });
+
   async charge({ request, response }) {
     try {
       const { midtrans_payment_id } = request.post()
@@ -84,6 +155,18 @@ class MidtranController {
     } catch (e) {
       console.log("e", e)
     }
+  }
+
+  async defaultValidation(data, rules) {
+    const messages = use("App/Validators/messages")
+    const validation = await validate(data, rules, messages)
+
+    if (validation.fails()) {
+      validationErrors = validation.messages()
+      return false
+    }
+
+    return true
   }
 }
 

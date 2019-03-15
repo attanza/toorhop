@@ -24,6 +24,7 @@ Route.group(() => {
 Route.group(() => {
   Route.get("token/extract", "ClientController.extract")
   Route.get("midtrans-payment-list", "MidtransPaymentController.index")
+  Route.post("midtrans/:method", "MidtransController.index")
   Route.post("midtrans-charge", "MidtransController.charge").validator(
     "MidtransCharge"
   )

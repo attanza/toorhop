@@ -15,11 +15,11 @@ Route.group(() => {
 
 /**
  * Clients
- * Use Client Middleware
  */
 
 Route.group(() => {
   Route.get("midtrans-payment-list", "MidtransPaymentController.index")
+  Route.post("midtrans/:method", "MidtransController.index")
   Route.post("midtrans-charge", "MidtransController.charge").validator(
     "MidtransCharge"
   )
@@ -27,10 +27,6 @@ Route.group(() => {
   .prefix("api/v1")
   .middleware("client")
   .formats(["json"])
-
-/**
- * Manage
- */
 
 Route.group(() => {
   /**
@@ -74,6 +70,28 @@ Route.group(() => {
         [["midtrans-payments.store"], ["can:create-midtrans-payment"]],
         [["midtrans-payments.update"], ["can:update-midtrans-payment"]],
         [["midtrans-payments.destroy"], ["can:delete-midtrans-payment"]]
+      ])
+    )
+
+  /**
+   * Midtrans Payment Instruction
+   */
+
+  Route.resource("payment-instructions", "PaymentInstructionController")
+    .apiOnly()
+    .validator(
+      new Map([
+        [["payment-instructions.store"], ["StorePaymentInstruction"]],
+        [["payment-instructions.update"], ["StorePaymentInstruction"]]
+      ])
+    )
+    .middleware(
+      new Map([
+        [["payment-instructions.index"], ["can:create-payment-instruction"]],
+        [["payment-instructions.show"], ["can:read-payment-instruction"]],
+        [["payment-instructions.store"], ["can:create-payment-instruction"]],
+        [["payment-instructions.update"], ["can:update-payment-instruction"]],
+        [["payment-instructions.destroy"], ["can:delete-payment-instruction"]]
       ])
     )
 

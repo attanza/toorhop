@@ -105,7 +105,7 @@ export default {
     options() {
       return {
         duration: 700,
-        offset: -100,
+        offset: 0,
         easing: "easeInOutCubic"
       }
     }
