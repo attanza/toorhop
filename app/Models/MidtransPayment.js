@@ -30,7 +30,7 @@ module.exports = MidtransPayment
 
 function getBaseUrl() {
   let environment = Env.get("NODE_ENV")
-  if (environment === "production") {
+  if (environment === "production" || environment === "staging") {
     return Env.get("PRODUCTION_APP_URL")
   } else {
     return Env.get("APP_URL")
