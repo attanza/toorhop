@@ -12,16 +12,27 @@ const { TransactionLog } = use("App/Traits")
 const { validate } = use("Validator")
 let isValid = false
 let validationErrors = null
+const axios = require("axios")
+
 class MidtranController {
   async index({ request, response }) {
     try {
       const defaultRules = { order_id: "required" }
       const refundRules = { amount: "required|number", reason: "required" }
-      isValid = await this.defaultValidation(request.all(), defaultRules)
+      const tokenRules = {
+        card_number: "required",
+        card_cvv: "required",
+        card_exp_month: "required|max:2",
+        card_exp_year: "required|max:4",
+        gross_amount: "required|number"
+      }
+      isValid = await this.getValidate(request.all(), defaultRules)
       const { method } = request.params
 
       if (method === "refund")
-        isValid = await this.defaultValidation(request.all(), refundRules)
+        isValid = await this.getValidate(request.all(), refundRules)
+      if (method === "token")
+        isValid = await this.getValidate(request.all(), tokenRules)
       if (!isValid) {
         return response
           .status(422)
@@ -58,6 +69,38 @@ class MidtranController {
         case "refund":
           result = await core.transaction.refund(order_id)
           break
+
+        case "token": {
+          const tokenData = request.only([
+            "card_number",
+            "card_cvv",
+            "card_exp_month",
+            "card_exp_year",
+            "gross_amount"
+          ])
+          const Env = use("Env")
+          const url = Env.get("MIDTRANS_DEV_URL") + "/token"
+          const key = Env.get("MIDTRANS_DEV_CLIENT_KEY")
+          const endPoint = `${url}?client_key=${key}&gross_amount=${
+            tokenData.gross_amount
+          }&card_number=${tokenData.card_number}&card_exp_month=${
+            tokenData.card_exp_month
+          }&card_exp_year=${tokenData.card_exp_year}&card_cvv=${
+            tokenData.card_cvv
+          }&secure=true&bank=bca`
+          const resp = await axios.get(endPoint)
+          if (resp.status_code === "200") {
+            return response
+              .status(200)
+              .send(ResponseParser.successResponse(resp.data, "Midtrans Token"))
+          } else {
+            return response
+              .status(400)
+              .send(
+                ResponseParser.errorResponse("Midtrans Token failed", resp.data)
+              )
+          }
+        }
 
         default:
           return response
@@ -99,9 +142,41 @@ class MidtranController {
           .status(400)
           .send(ResponseParser.errorResponse("Midtrans payment unknown"))
       }
-      const core = MidtransCore(request)
-
       const postData = GetMidtransPostData(request, midtransPayment)
+      const core = MidtransCore(request)
+      // If Credit card requires additional data eg: card_number, cvv, etc
+      if (midtransPayment.slug === "credit-card") {
+        const rules = {
+          card_number: "required",
+          card_cvv: "required",
+          card_exp_month: "required|max:2",
+          card_exp_year: "required|max:2"
+        }
+        const isValid = await this.getValidate(request.all(), rules)
+        if (!isValid) {
+          return response
+            .status(422)
+            .send(ResponseParser.apiValidationFailed(validationErrors))
+        }
+        // Get initial credit card token
+        const creditCardData = request.only([
+          "card_number",
+          "card_cvv",
+          "card_exp_month",
+          "card_exp_year"
+        ])
+        creditCardData.bank = midtransPayment.bank
+        creditCardData.gross_amount = postData.transaction_details.gross_amount
+        creditCardData.token_id =
+          "481111-1114-0e68a4c4-85d3-48b5-b6cb-9945b2d3dcc9"
+        const tokenResponse = await core.token(creditCardData)
+        return response
+          .status(200)
+          .send(
+            ResponseParser.successResponse(tokenResponse, "Credit Card Charge")
+          )
+      }
+
       // const postData = fakeResponse(midtransPayment.bank)
       // return response
       //   .status(200)
@@ -165,7 +240,7 @@ class MidtranController {
     }
   }
 
-  async defaultValidation(data, rules) {
+  async getValidate(data, rules) {
     const messages = use("App/Validators/messages")
     const validation = await validate(data, rules, messages)
 

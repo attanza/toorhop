@@ -74,7 +74,7 @@ class MidtransPaymentController {
     try {
       let body = request.only(fillable)
       const data = await MidtransPayment.create(body)
-      await this.uploadLogo(request, data)
+      await this.uploadLogo(request, data, auth)
       const activity = `Add new Midtrans Payment '${data.slug}'`
       await ActivityTraits.saveActivity(request, auth, activity)
       let parsed = ResponseParser.apiCreated(data.toJSON())
@@ -120,7 +120,7 @@ class MidtransPaymentController {
       await data.save()
       const activity = `Update Midtrans Payment '${data.slug}'`
       await ActivityTraits.saveActivity(request, auth, activity)
-      await this.uploadLogo(request, data)
+      await this.uploadLogo(request, data, auth)
       let parsed = ResponseParser.apiUpdated(data.toJSON())
       return response.status(200).send(parsed)
     } catch (e) {
@@ -164,7 +164,7 @@ class MidtransPaymentController {
    * @returns Midtrans Payment data
    */
 
-  async uploadLogo(request, midatransData) {
+  async uploadLogo(request, midtransData, auth) {
     try {
       const logo = request.file("logo", {
         types: ["image"],
@@ -181,11 +181,11 @@ class MidtransPaymentController {
       if (!logo.moved()) {
         throw { message: "logo failed to upload", status: 400 }
       }
-      await midatransData.merge({ logo: `/img/bank_logos/${name}` })
-      await midatransData.save()
-      const activity = `Upload Midtrans Payment logo '${data.slug}'`
+      await midtransData.merge({ logo: `/img/bank_logos/${name}` })
+      await midtransData.save()
+      const activity = `Upload Midtrans Payment logo '${midtransData.slug}'`
       await ActivityTraits.saveActivity(request, auth, activity)
-      return midatransData
+      return midtransData
     } catch (e) {
       throw e
     }

@@ -22,6 +22,8 @@ module.exports = (request, midtransPayment) => {
       return bca_virtual_account()
     case "permata-virtual-account":
       return permata_virtual_account()
+    case "credit-card":
+      return credit_card()
 
     default:
       return null
@@ -121,6 +123,16 @@ function permata_virtual_account() {
       }`
     }
   }
+  return postData
+}
+
+/**
+ * Permata Virtual Account Post Data
+ * @returns {baseData, bank_transfer}
+ */
+
+function credit_card() {
+  let postData = getBaseData(r)
   return postData
 }
 

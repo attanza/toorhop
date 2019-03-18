@@ -1,4 +1,4 @@
-"use strict";
+"use strict"
 
 class ResponseParser {
   apiCollection(items) {
@@ -12,8 +12,8 @@ class ResponseParser {
         lastPage: items.lastPage
       },
       data: items.data
-    };
-    return output;
+    }
+    return output
   }
 
   apiCreated(data) {
@@ -23,8 +23,8 @@ class ResponseParser {
         message: "Created successfully"
       },
       data
-    };
-    return output;
+    }
+    return output
   }
 
   apiUpdated(data) {
@@ -34,8 +34,8 @@ class ResponseParser {
         message: "Updated successfully"
       },
       data
-    };
-    return output;
+    }
+    return output
   }
 
   apiDeleted() {
@@ -44,8 +44,8 @@ class ResponseParser {
         status: 200,
         message: "Deleted successfully"
       }
-    };
-    return output;
+    }
+    return output
   }
 
   apiItem(data) {
@@ -55,16 +55,16 @@ class ResponseParser {
         message: "Data retrieval successfully"
       },
       data
-    };
-    return output;
+    }
+    return output
   }
 
   apiNotFound() {
     const meta = {
       status: 400,
       message: "Data not found"
-    };
-    return { meta };
+    }
+    return { meta }
   }
 
   apiValidationFailed(data) {
@@ -74,21 +74,22 @@ class ResponseParser {
         message: "Validation failed"
       },
       details: data
-    };
-    return output;
+    }
+    return output
   }
 
   /**
    * Error Response
    */
 
-  errorResponse(msg) {
+  errorResponse(msg, data = null) {
     return {
       meta: {
         status: 400,
         message: msg
-      }
-    };
+      },
+      data
+    }
   }
 
   /**
@@ -101,7 +102,7 @@ class ResponseParser {
         status: 401,
         message: "Unathorized"
       }
-    };
+    }
   }
 
   /**
@@ -115,7 +116,7 @@ class ResponseParser {
         message: msg
       },
       data
-    };
+    }
   }
 
   /**
@@ -128,7 +129,7 @@ class ResponseParser {
         status: 403,
         message: "Forbidden"
       }
-    };
+    }
   }
 
   /**
@@ -141,8 +142,8 @@ class ResponseParser {
         status: 500,
         message: "unknownError"
       }
-    };
+    }
   }
 }
 
-module.exports = new ResponseParser();
+module.exports = new ResponseParser()

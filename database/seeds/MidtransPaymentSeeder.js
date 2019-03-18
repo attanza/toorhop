@@ -33,6 +33,13 @@ class MidtransPaymentSeeder {
         transaction_type: "Bank Transfer",
         payment_type: "bank_transfer",
         description: "Pay from Permata ATM's or internet banking"
+      },
+      {
+        name: "Credit Card",
+        bank: "BCA",
+        transaction_type: "Credit Card",
+        payment_type: "credit_card",
+        description: "Pay with VISA, MasterCard, JCB or Amex"
       }
     ]
     await MidtransPayment.createMany(payments)
