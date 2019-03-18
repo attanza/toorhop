@@ -7,6 +7,9 @@ tmp
 # Environment variables, never commit this file
 .env
 
+# images
+public/img
+
 # The development sqlite file
 database/development.sqlite
 
