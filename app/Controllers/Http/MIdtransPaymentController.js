@@ -183,6 +183,7 @@ class MidtransPaymentController {
       }
       await midtransData.merge({ logo: `/img/bank_logos/${name}` })
       await midtransData.save()
+
       const activity = `Upload Midtrans Payment logo '${midtransData.slug}'`
       await ActivityTraits.saveActivity(request, auth, activity)
       return midtransData
