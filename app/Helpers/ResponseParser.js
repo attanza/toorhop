@@ -100,7 +100,7 @@ class ResponseParser {
     return {
       meta: {
         status: 401,
-        message: "Unathorized"
+        message: "Unauthorized"
       }
     }
   }
@@ -140,7 +140,7 @@ class ResponseParser {
     return {
       meta: {
         status: 500,
-        message: "unknownError"
+        message: "Unknown error"
       }
     }
   }

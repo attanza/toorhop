@@ -21,7 +21,6 @@
             <v-card-text>
               <v-layout row wrap>
                 <v-flex xs12 style="overflow-x:auto;">
-                  <h3 class="mb-3">Decription:</h3>
                   <VueMarkdown :source="item.request.description"/>
                   <!-- <h3 class="mb-3">Header</h3>
                   <table v-if="item.request.header" class="table is-fullwidth">
@@ -61,7 +60,7 @@
                   </div>
                 </v-flex>
                 <v-flex xs12 style="overflow-x:auto;" class="mt-4">
-                  <h3 class="mb-3">Response example:</h3>
+                  <h3 class="mb-3">Response Example:</h3>
                   <pre><code>{{ getResponse(item.response) }}</code></pre>
                 </v-flex>
               </v-layout>

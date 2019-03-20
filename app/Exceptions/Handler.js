@@ -1,6 +1,6 @@
-'use strict'
+"use strict"
 
-const BaseExceptionHandler = use('BaseExceptionHandler')
+const BaseExceptionHandler = use("BaseExceptionHandler")
 
 /**
  * This class handles all exceptions thrown during
@@ -20,30 +20,30 @@ class ExceptionHandler extends BaseExceptionHandler {
    *
    * @return {void}
    */
-  async handle (error, { response }) {
-    if (error.name === 'InvalidJwtToken') {
+  async handle(error, { response }) {
+    if (error.name === "InvalidJwtToken") {
       return response.status(401).send({
         meta: {
           status: 401,
-          message: 'Unathorized'
+          message: "Unauthorized"
         }
       })
     }
 
-    if (error.name === 'ExpiredJwtToken') {
+    if (error.name === "ExpiredJwtToken") {
       return response.status(401).send({
         meta: {
           status: 401,
-          message: 'Expired token'
+          message: "Token expired"
         }
       })
     }
 
-    if (error.name === 'HttpException') {
+    if (error.name === "HttpException") {
       return response.status(404).send({
         meta: {
           status: 404,
-          message: 'Route not found'
+          message: "Route not found"
         }
       })
     }
