@@ -139,7 +139,6 @@ class MidtransController {
           ResponseParser.successResponse(midtransResponse, "Midtrans Response")
         )
     } catch (e) {
-      console.log("e", e.message)
       return response
         .status(400)
         .send(ResponseParser.errorResponse("Operation failed", e.ApiResponse))
