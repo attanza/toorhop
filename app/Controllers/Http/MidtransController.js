@@ -6,7 +6,8 @@ const {
   GetMidtransPostData,
   MidtransCore,
   IsMidtransSign,
-  GetMidtransToken
+  GetMidtransToken,
+  ErrorLog
 } = use("App/Helpers")
 const { TransactionLog } = use("App/Traits")
 const { validate } = use("Validator")
@@ -24,7 +25,7 @@ const tokenRules = {
 }
 const ccRules = { token_id: "required" }
 
-class MidtranController {
+class MidtransController {
   async index({ request, response }) {
     try {
       isValid = await this.getValidate(request.all(), defaultRules)
@@ -94,15 +95,14 @@ class MidtranController {
         .status(200)
         .send(ResponseParser.successResponse(result, `Midtrans ${method}`))
     } catch (e) {
-      console.log("e", e)
       if (e.error) {
         return response
           .status(422)
           .send(ResponseParser.apiValidationFailed(e.message))
+      } else {
+        const error = ErrorLog(request, e)
+        return response.status(error.status).send({ meta: error.meta })
       }
-      return response
-        .status(400)
-        .send(ResponseParser.errorResponse(e.ApiResponse || "Operation failed"))
     }
   }
 
@@ -212,4 +212,4 @@ function getTokenData(request) {
   ])
 }
 
-module.exports = MidtranController
+module.exports = MidtransController
