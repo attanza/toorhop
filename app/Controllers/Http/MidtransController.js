@@ -9,9 +9,10 @@ const {
   GetMidtransToken,
   ErrorLog
 } = use("App/Helpers")
-const { TransactionLog } = use("App/Traits")
+const { TransactionLog, ChargeLogTrait } = use("App/Traits")
 const { validate } = use("Validator")
 const Env = use("Env")
+const axios = require("axios")
 let isValid = false
 let validationErrors = null
 
@@ -107,9 +108,9 @@ class MidtransController {
     }
   }
 
-  async charge({ request, response }) {
+  async charge({ request, response, authClient }) {
     try {
-      const { midtrans_payment_id } = request.post()
+      const { midtrans_payment_id, order_id } = request.post()
       const midtransPayment = await MidtransPayment.find(midtrans_payment_id)
       if (!midtransPayment) {
         return response
@@ -133,7 +134,11 @@ class MidtransController {
       }
 
       const midtransResponse = await core.charge(postData)
-
+      await ChargeLogTrait.store({
+        user_id: authClient.id,
+        order_id,
+        midtrans_payment_id
+      })
       return response
         .status(200)
         .send(
@@ -155,6 +160,12 @@ class MidtransController {
       }
       console.log("receivedJson", receivedJson)
       await TransactionLog(request)
+      // Send Callback
+      const user = await ChargeLogTrait.getUser(receivedJson.order_id)
+      if (user && user.callback_url) {
+        const resp = await axios.post(user.callback_url, receivedJson)
+        console.log("resp", resp)
+      }
       return response.status(200).send(receivedJson)
     } catch (e) {
       console.log("notification handler error: ", e)

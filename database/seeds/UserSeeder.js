@@ -1,12 +1,13 @@
-"use strict";
+"use strict"
 
-const Database = use("Database");
-const User = use("App/Models/User");
-const randomstring = require("randomstring");
+const Database = use("Database")
+const User = use("App/Models/User")
+const randomstring = require("randomstring")
 class UserSeeder {
   async run() {
-    await Database.table("users").truncate();
-    await Database.table("tokens").truncate();
+    await Database.table("users").truncate()
+    await Database.table("tokens").truncate()
+    await Database.table("payment_charge_logs").truncate()
 
     await User.create({
       username: "administrator",
@@ -21,7 +22,7 @@ class UserSeeder {
         charset: "hex"
       }),
       is_active: 1
-    });
+    })
 
     await User.create({
       username: "toorhop",
@@ -29,9 +30,10 @@ class UserSeeder {
       client: "Toorhop",
       client_key: "LFgQNUYugaRy",
       secret: "63124939efecaefa67b2e22cd09881b49e748f2b",
-      is_active: 1
-    });
+      is_active: 1,
+      callback_url: "https://jobs.toorhop.com/midtrans"
+    })
   }
 }
 
-module.exports = UserSeeder;
+module.exports = UserSeeder
