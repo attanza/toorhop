@@ -148,10 +148,10 @@ class MidtransController {
   async notificationHandle({ request, response }) {
     try {
       const receivedJson = request.post()
-      if (!IsMidtransSign(request)) {
-        console.log("notification not authorized")
-        return response.status(401).send(ResponseParser.unauthorizedResponse())
-      }
+      // if (!IsMidtransSign(request)) {
+      //   console.log("notification not authorized")
+      //   return response.status(401).send(ResponseParser.unauthorizedResponse())
+      // }
       const core = MidtransCore(request)
       console.log("receivedJson", receivedJson)
       await TransactionLog(request)
