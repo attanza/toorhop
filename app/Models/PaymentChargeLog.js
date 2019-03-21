@@ -7,6 +7,10 @@ class PaymentChargeLog extends Model {
   user() {
     return this.belongsTo("App/Models/User")
   }
+
+  paymentType() {
+    return this.belongsTo("App/Models/MidtransPayment")
+  }
 }
 
 module.exports = PaymentChargeLog

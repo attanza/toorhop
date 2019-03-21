@@ -105,6 +105,7 @@ Route.group(() => {
    */
 
   Route.get("transaction-logs", "TransactionLogController.index")
+  Route.get("payment-charge-logs", "TransactionLogController.index")
 })
   .prefix("api/dev-v1")
   .formats(["json"])

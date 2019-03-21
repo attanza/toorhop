@@ -1,25 +1,17 @@
 "use strict"
 
-const TransactionLog = use("App/Models/TransactionLog")
+const PaymentChargeLog = use("App/Models/PaymentChargeLog")
 const { ResponseParser, ErrorLog } = use("App/Helpers")
-const { ActivityTraits } = use("App/Traits")
-const fillable = [
-  "status_code",
-  "transaction_id",
-  "order_id",
-  "fraud_status",
-  "transaction_status"
-]
 
 /**
- * TransactionLogController
+ * PaymentChargeLogController
  *
  */
 
-class TransactionLogController {
+class PaymentChargeLogController {
   /**
    * Index
-   * Get List of TransactionLogs
+   * Get List of PaymentChargeLogs
    */
   async index({ request, response }) {
     try {
@@ -33,7 +25,9 @@ class TransactionLogController {
         start_date,
         end_date,
         sort_by,
-        sort_mode
+        sort_mode,
+        user_id,
+        midtrans_payment_id
       } = request.get()
 
       if (!page) page = 1
@@ -41,18 +35,30 @@ class TransactionLogController {
       if (!sort_by) sort_by = "id"
       if (!sort_mode) sort_mode = "desc"
 
-      const data = await TransactionLog.query()
+      const data = await PaymentChargeLog.query()
         .where(function() {
           if (search && search != "") {
-            this.where("status_code", "like", `%${search}%`)
-            this.orWhere("transaction_id", "like", `%${search}%`)
-            this.orWhere("order_id", "like", `%${search}%`)
-            this.orWhere("fraud_status", "like", `%${search}%`)
-            this.orWhere("transaction_status", "like", `%${search}%`)
+            this.where("order_id", "like", `%${search}%`)
+            this.orWhereHas("user", builder => {
+              builder.where("name", "like", `%${search}%`)
+            })
+            this.orWhereHas("paymentType", builder => {
+              builder.where("name", "like", `%${search}%`)
+            })
+            // this.orWhere("midtrans_payment_id", "like", `%${search}%`)
+            // this.orWhere("order_id", "like", `%${search}%`)
           }
 
           if (search_by && search_query) {
             this.where(search_by, search_query)
+          }
+
+          if (user_id && user_id != "") {
+            this.where("user_id", user_id)
+          }
+
+          if (midtrans_payment_id && midtrans_payment_id != "") {
+            this.where("midtrans_payment_id", midtrans_payment_id)
           }
 
           if (between_date && start_date && end_date) {
@@ -71,4 +77,4 @@ class TransactionLogController {
   }
 }
 
-module.exports = TransactionLogController
+module.exports = PaymentChargeLogController
