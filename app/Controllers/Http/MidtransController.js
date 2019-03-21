@@ -149,6 +149,7 @@ class MidtransController {
     try {
       const receivedJson = request.post()
       if (!IsMidtransSign(request)) {
+        console.log("notification not authorized")
         return response.status(401).send(ResponseParser.unauthorizedResponse())
       }
       const core = MidtransCore(request)
