@@ -185,7 +185,7 @@ class MidtransController {
         })
       return response.status(200).send(receivedJson)
     } catch (e) {
-      console.log("e", e)
+      console.log("notification handler error: ", e)
     }
   }
 
