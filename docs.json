@@ -2426,7 +2426,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"order_id\": \"ABCDEF21\",\n\t\"midtrans_payment_id\": 1,\n\t\"customer_details\": {\n        \"email\": \"budi.utomo@Midtrans.com\",\n        \"first_name\": \"budi\",\n        \"last_name\": \"utomo\",\n        \"phone\": \"+6281 1234 1234\"\n    },\n    \"item_details\": [\n    {\n       \"id\": \"1388998298204\",\n       \"price\": 5000,\n       \"quantity\": 1,\n       \"name\": \"Ayam Zozozo\"\n    },\n    {\n       \"id\": \"1388998298205\",\n       \"price\": 5000,\n       \"quantity\": 1,\n       \"name\": \"Ayam Xoxoxo\"\n    }\n   ],\n   \"card_number\": \"4811 1111 1111 1114\",\n   \"card_cvv\": \"123\",\n   \"card_exp_month\": \"01\",\n   \"card_exp_year\": \"20\",\n   \"gross_amount\": 10000\n}"
+							"raw": "{\n\t\"order_id\": \"ABCDEF35\",\n\t\"midtrans_payment_id\": 1,\n\t\"customer_details\": {\n        \"email\": \"budi.utomo@Midtrans.com\",\n        \"first_name\": \"budi\",\n        \"last_name\": \"utomo\",\n        \"phone\": \"+6281 1234 1234\"\n    },\n    \"item_details\": [\n    {\n       \"id\": \"1388998298204\",\n       \"price\": 5000,\n       \"quantity\": 1,\n       \"name\": \"Ayam Zozozo\"\n    },\n    {\n       \"id\": \"1388998298205\",\n       \"price\": 5000,\n       \"quantity\": 1,\n       \"name\": \"Ayam Xoxoxo\"\n    }\n   ],\n   \"card_number\": \"4811 1111 1111 1114\",\n   \"card_cvv\": \"123\",\n   \"card_exp_month\": \"01\",\n   \"card_exp_year\": \"20\",\n   \"gross_amount\": 10000\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/midtrans-charge",
@@ -3078,7 +3078,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"order_id\": \"ABCDEF24\",\n\t\"midtrans_payment_id\": 5,\n\t\"customer_details\": {\n        \"email\": \"budi.utomo@Midtrans.com\",\n        \"first_name\": \"budi\",\n        \"last_name\": \"utomo\",\n        \"phone\": \"+6281 1234 1234\"\n    },\n    \"item_details\": [\n    {\n       \"id\": \"1388998298204\",\n       \"price\": 5000,\n       \"quantity\": 1,\n       \"name\": \"Ayam Zozozo\"\n    },\n    {\n       \"id\": \"1388998298205\",\n       \"price\": 5000,\n       \"quantity\": 1,\n       \"name\": \"Ayam Xoxoxo\"\n    }\n   ],\n   \"token_id\": \"{{cardToken}}\"\n}"
+							"raw": "{\n\t\"order_id\": \"ABCDEF27\",\n\t\"midtrans_payment_id\": 5,\n\t\"customer_details\": {\n        \"email\": \"budi.utomo@Midtrans.com\",\n        \"first_name\": \"budi\",\n        \"last_name\": \"utomo\",\n        \"phone\": \"+6281 1234 1234\"\n    },\n    \"item_details\": [\n    {\n       \"id\": \"1388998298204\",\n       \"price\": 5000,\n       \"quantity\": 1,\n       \"name\": \"Ayam Zozozo\"\n    },\n    {\n       \"id\": \"1388998298205\",\n       \"price\": 5000,\n       \"quantity\": 1,\n       \"name\": \"Ayam Xoxoxo\"\n    }\n   ],\n   \"token_id\": \"{{cardToken}}\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/midtrans-charge",
@@ -4218,6 +4218,121 @@
 				}
 			],
 			"description": "Managing endpoint to see transaction log received by Toorhop Payment Micro Service",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a86ebc1e-7765-4b1c-ab34-ee9a4f95356b",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "e4546c73-ad31-4c41-86bb-ac61b06173fe",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Payment Charge Log",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/payment-charge-logs",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"payment-charge-logs"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "List Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseUrl}}/payment-charge-logs",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"payment-charge-logs"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 21 Mar 2019 05:54:12 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"meta\": {\n        \"status\": 200,\n        \"message\": \"Data retrieval successfully\",\n        \"total\": 5,\n        \"perPage\": 10,\n        \"page\": 1,\n        \"lastPage\": 1\n    },\n    \"data\": [\n        {\n            \"id\": 5,\n            \"status_code\": \"200\",\n            \"transaction_id\": \"0b13c20f-a489-4cf5-8c57-4fd176bd6a03\",\n            \"order_id\": \"1553146946\",\n            \"fraud_status\": \"accept\",\n            \"transaction_status\": \"settlement\",\n            \"detail\": \"{\\\"transaction_time\\\":\\\"2019-03-21 12:43:12\\\",\\\"transaction_status\\\":\\\"settlement\\\",\\\"transaction_id\\\":\\\"0b13c20f-a489-4cf5-8c57-4fd176bd6a03\\\",\\\"status_message\\\":\\\"midtrans payment notification\\\",\\\"status_code\\\":\\\"200\\\",\\\"signature_key\\\":\\\"84f53bfea65059d0ada965212f26f2ca5f7b98acd6a606b2809db9fb0688bdbc59c502f3c9d84f8a1495b3467c52f8a0ac59e5076eb3a3887d929f3b97032308\\\",\\\"settlement_time\\\":\\\"2019-03-21 12:44:00\\\",\\\"permata_va_number\\\":\\\"871000173343476\\\",\\\"payment_type\\\":\\\"bank_transfer\\\",\\\"order_id\\\":\\\"1553146946\\\",\\\"gross_amount\\\":\\\"100000.00\\\",\\\"fraud_status\\\":\\\"accept\\\"}\",\n            \"ip\": \"127.0.0.1\",\n            \"hostname\": \"localhost\",\n            \"created_at\": \"2019-03-21 05:44:01\",\n            \"updated_at\": \"2019-03-21 05:44:01\"\n        },\n        {\n            \"id\": 4,\n            \"status_code\": \"201\",\n            \"transaction_id\": \"0b13c20f-a489-4cf5-8c57-4fd176bd6a03\",\n            \"order_id\": \"1553146946\",\n            \"fraud_status\": \"accept\",\n            \"transaction_status\": \"pending\",\n            \"detail\": \"{\\\"transaction_time\\\":\\\"2019-03-21 12:43:12\\\",\\\"transaction_status\\\":\\\"pending\\\",\\\"transaction_id\\\":\\\"0b13c20f-a489-4cf5-8c57-4fd176bd6a03\\\",\\\"status_message\\\":\\\"midtrans payment notification\\\",\\\"status_code\\\":\\\"201\\\",\\\"signature_key\\\":\\\"5f816611afe8928fcde7e4263078b6282a9dd0371e83af7ca75e572fdbac843beb3ecf267621f34c3756a642163f371fde0c156e9054fed4cf3cc84067f45bbb\\\",\\\"permata_va_number\\\":\\\"871000173343476\\\",\\\"payment_type\\\":\\\"bank_transfer\\\",\\\"order_id\\\":\\\"1553146946\\\",\\\"gross_amount\\\":\\\"100000.00\\\",\\\"fraud_status\\\":\\\"accept\\\"}\",\n            \"ip\": \"127.0.0.1\",\n            \"hostname\": \"localhost\",\n            \"created_at\": \"2019-03-21 05:43:12\",\n            \"updated_at\": \"2019-03-21 05:43:12\"\n        }\n    ]\n}"
+						}
+					]
+				}
+			],
+			"description": "Managing endpoint to see payment charge operation.",
 			"event": [
 				{
 					"listen": "prerequest",
