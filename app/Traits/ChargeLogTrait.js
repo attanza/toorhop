@@ -8,7 +8,7 @@ class ChargeLogTrait {
   }
 
   async getUser(orderId) {
-    let log = await query()
+    let log = await ChargeLogTrait.query()
       .with("user")
       .where("order_id", orderId)
       .first()
