@@ -1,8 +1,8 @@
 {
-  "name": "adonis-api-app",
+  "name": "toorhop-payments-api",
   "version": "4.1.0",
   "adonis-version": "4.1.0",
-  "description": "Adonisjs boilerplate for API server with pre-configured JWT",
+  "description": "Toorhop Payment API",
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
@@ -16,7 +16,7 @@
     "adonisjs",
     "adonis-app"
   ],
-  "author": "",
+  "author": "dani.lesmiadi@gmail.com",
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
