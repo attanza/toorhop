@@ -13,6 +13,12 @@ Route.group(() => {
   Route.post("token/create", "ClientController.createToken").validator(
     "CreateToken"
   )
+
+  Route.post("toorhop-notification-handler", async ({ request, response }) => {
+    const body = request.post()
+    console.log("body", body)
+    return response.status(200).send(body)
+  })
 })
   .prefix("api/dev-v1")
   .formats(["json"])
