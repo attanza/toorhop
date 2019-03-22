@@ -165,7 +165,10 @@ class MidtransController {
       // if (user && user.callback_url) {
       //   axios.post(user.callback_url, receivedJson)
       // }
-      axios.post("toorhop-notification-handler", receivedJson)
+      axios.post(
+        "https://midtrans.toorhop.com/api/v1/toorhop-notification-handler",
+        receivedJson
+      )
       return response.status(200).send(receivedJson)
     } catch (e) {
       console.log("notification handler error: ", e)
