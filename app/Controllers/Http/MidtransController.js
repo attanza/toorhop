@@ -161,10 +161,10 @@ class MidtransController {
       console.log("receivedJson", receivedJson)
       await TransactionLog(request)
       // Send Callback
-      const user = await ChargeLogTrait.getUser(receivedJson.order_id)
-      if (user && user.callback_url) {
-        axios.post(user.callback_url, receivedJson)
-      }
+      // const user = await ChargeLogTrait.getUser(receivedJson.order_id)
+      // if (user && user.callback_url) {
+      //   axios.post(user.callback_url, receivedJson)
+      // }
       axios.post("toorhop-notification-handler", receivedJson)
       return response.status(200).send(receivedJson)
     } catch (e) {

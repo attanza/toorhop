@@ -9,6 +9,12 @@ Route.group(() => {
     "midtrans-notification-handler",
     "MidtransController.notificationHandle"
   )
+
+  Route.post("toorhop-notification-handler", async ({ request, response }) => {
+    const body = request.post()
+    console.log("body", body)
+    return response.status(200).send(body)
+  })
 })
   .prefix("api/v1")
   .formats(["json"])
