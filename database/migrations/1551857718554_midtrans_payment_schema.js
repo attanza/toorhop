@@ -13,6 +13,7 @@ class MidtransPaymentSchema extends Schema {
       table.string("transaction_type", 50)
       table.string("payment_type", 50)
       table.string("logo")
+      table.boolean("is_active").default(1)
       table.string("description")
       table.timestamps()
     })

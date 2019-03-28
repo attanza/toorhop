@@ -5,7 +5,13 @@ const { ResponseParser, ErrorLog } = use("App/Helpers")
 const { ActivityTraits } = use("App/Traits")
 const Helpers = use("Helpers")
 const Drive = use("Drive")
-const fillable = ["name", "bank", "transaction_type", "payment_type"]
+const fillable = [
+  "name",
+  "bank",
+  "transaction_type",
+  "payment_type",
+  "is_active"
+]
 
 /**
  * MidtransPaymentController
@@ -29,7 +35,8 @@ class MidtransPaymentController {
         start_date,
         end_date,
         sort_by,
-        sort_mode
+        sort_mode,
+        is_active
       } = request.get()
 
       if (!page) page = 1
@@ -49,6 +56,10 @@ class MidtransPaymentController {
 
           if (search_by && search_query) {
             this.where(search_by, search_query)
+          }
+
+          if (is_active && is_active != "") {
+            this.where("is_active", is_active)
           }
 
           if (between_date && start_date && end_date) {
@@ -190,6 +201,19 @@ class MidtransPaymentController {
     } catch (e) {
       throw e
     }
+  }
+
+  /**
+   * Combo List
+   */
+
+  async comboList({ response }) {
+    const payments = await MidtransPayment.query()
+      .where("is_active", 1)
+      .fetch()
+
+    let parsed = ResponseParser.apiItem(payments.toJSON())
+    return response.status(200).send(parsed)
   }
 }
 

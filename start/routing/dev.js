@@ -23,14 +23,14 @@ Route.group(() => {
 
 Route.group(() => {
   Route.get("token/extract", "ClientController.extract")
-  Route.get("midtrans-payment-list", "MidtransPaymentController.index")
+  Route.get("midtrans-payment-list", "MidtransPaymentController.comboList")
   Route.post("midtrans/:method", "MidtransController.index")
   Route.post("midtrans-charge", "MidtransController.charge").validator(
     "MidtransCharge"
   )
 })
   .prefix("api/dev-v1")
-  .middleware("client")
+  // .middleware("client")
   .formats(["json"])
 
 Route.group(() => {

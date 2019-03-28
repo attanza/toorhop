@@ -9,7 +9,8 @@ class StoreMidtransPayment {
       name: "required|max:50|unique:midtrans_payments",
       bank: "required|max:20",
       transaction_type: "required|max:50",
-      payment_type: "required|max:50"
+      payment_type: "required|max:50",
+      is_active: "boolean"
     }
   }
 
@@ -22,7 +23,8 @@ class StoreMidtransPayment {
       name: "trim|escape",
       bank: "trim|escape",
       transaction_type: "trim|escape",
-      payment_type: "trim|escape"
+      payment_type: "trim|escape",
+      is_active: "toBoolean"
     }
   }
 
