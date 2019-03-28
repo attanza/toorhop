@@ -134,8 +134,10 @@ class MidtransController {
       }
 
       const midtransResponse = await core.charge(postData)
+      let userId = 2
+      if (authClient && authClient.id) userId = authClient.id
       await ChargeLogTrait.store({
-        user_id: authClient.id,
+        user_id: userId,
         order_id,
         midtrans_payment_id
       })
@@ -145,6 +147,7 @@ class MidtransController {
           ResponseParser.successResponse(midtransResponse, "Midtrans Response")
         )
     } catch (e) {
+      console.log("e", e)
       return response
         .status(400)
         .send(ResponseParser.errorResponse("Operation failed", e.ApiResponse))

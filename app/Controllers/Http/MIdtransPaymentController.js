@@ -209,6 +209,7 @@ class MidtransPaymentController {
 
   async comboList({ response }) {
     const payments = await MidtransPayment.query()
+      .with("instructions")
       .where("is_active", 1)
       .fetch()
 
