@@ -134,10 +134,8 @@ class MidtransController {
       }
 
       const midtransResponse = await core.charge(postData)
-      let userId = 2
-      if (authClient && authClient.id) userId = authClient.id
       await ChargeLogTrait.store({
-        user_id: userId,
+        user_id: authClient.id,
         order_id,
         midtrans_payment_id
       })

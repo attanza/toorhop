@@ -30,7 +30,7 @@ Route.group(() => {
   )
 })
   .prefix("api/dev-v1")
-  // .middleware("client")
+  .middleware("client")
   .formats(["json"])
 
 Route.group(() => {
