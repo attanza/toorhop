@@ -164,6 +164,7 @@ class MidtransController {
       // Send Callback
       const user = await ChargeLogTrait.getUser(receivedJson.order_id)
       if (user && user.callback_url) {
+        console.log(`Sending notification to ${user.callback_url}`)
         axios.post(user.callback_url, receivedJson)
       }
       return response.status(200).send(receivedJson)
