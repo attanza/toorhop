@@ -8,79 +8,84 @@ const Env = use("Env")
 class Client {
   async handle(ctx, next) {
     try {
-      // const client_key = ctx.request.header("x-toorhop-key")
-      // const date = ctx.request.header("x-toorhop-date")
-      // const token = ctx.request.header("x-toorhop-token")
+      if (IsDev(ctx.request)) {
+        const user = await User.find(2)
+        ctx.authClient = user.toJSON()
 
-      // if (!date) {
-      //   console.log("no date") //eslint-disable-line
-      //   return ctx.response
-      //     .status(401)
-      //     .send(ResponseParser.unauthorizedResponse())
-      // }
+        await next()
+      }
+      const client_key = ctx.request.header("x-toorhop-key")
+      const date = ctx.request.header("x-toorhop-date")
+      const token = ctx.request.header("x-toorhop-token")
 
-      // if (!checkDate(date)) {
-      //   console.log("date expired") //eslint-disable-line
-      //   return ctx.response
-      //     .status(401)
-      //     .send(ResponseParser.unauthorizedResponse())
-      // }
+      if (!date) {
+        console.log("no date") //eslint-disable-line
+        return ctx.response
+          .status(401)
+          .send(ResponseParser.unauthorizedResponse())
+      }
 
-      // if (!client_key) {
-      //   console.log("no client_key") //eslint-disable-line
+      if (!checkDate(date)) {
+        console.log("date expired") //eslint-disable-line
+        return ctx.response
+          .status(401)
+          .send(ResponseParser.unauthorizedResponse())
+      }
 
-      //   return ctx.response
-      //     .status(401)
-      //     .send(ResponseParser.unauthorizedResponse())
-      // }
+      if (!client_key) {
+        console.log("no client_key") //eslint-disable-line
 
-      // if (!token) {
-      //   console.log("no token") //eslint-disable-line
+        return ctx.response
+          .status(401)
+          .send(ResponseParser.unauthorizedResponse())
+      }
 
-      //   return ctx.response
-      //     .status(401)
-      //     .send(ResponseParser.unauthorizedResponse())
-      // }
+      if (!token) {
+        console.log("no token") //eslint-disable-line
 
-      // const user = await User.findBy("client_key", client_key)
-      // if (!user) {
-      //   console.log("no user") //eslint-disable-line
-      //   return ctx.response
-      //     .status(400)
-      //     .send(ResponseParser.unauthorizedResponse())
-      // }
+        return ctx.response
+          .status(401)
+          .send(ResponseParser.unauthorizedResponse())
+      }
 
-      // if (!user.is_active) {
-      //   console.log("User not active")
-      //   return ctx.response
-      //     .status(400)
-      //     .send(ResponseParser.unauthorizedResponse())
-      // }
+      const user = await User.findBy("client_key", client_key)
+      if (!user) {
+        console.log("no user") //eslint-disable-line
+        return ctx.response
+          .status(400)
+          .send(ResponseParser.unauthorizedResponse())
+      }
 
-      // const decrypted = jwt.verify(token, user.secret)
-      // if (!decrypted) {
-      //   console.log("decrypt failed") //eslint-disable-line
+      if (!user.is_active) {
+        console.log("User not active")
+        return ctx.response
+          .status(400)
+          .send(ResponseParser.unauthorizedResponse())
+      }
 
-      //   return ctx.response
-      //     .status(400)
-      //     .send(ResponseParser.unauthorizedResponse())
-      // }
+      const decrypted = jwt.verify(token, user.secret)
+      if (!decrypted) {
+        console.log("decrypt failed") //eslint-disable-line
 
-      // if (!checkDate(decrypted.data.date)) {
-      //   console.log("decrypted date expired") //eslint-disable-line
-      //   return ctx.response
-      //     .status(401)
-      //     .send(ResponseParser.unauthorizedResponse())
-      // }
+        return ctx.response
+          .status(400)
+          .send(ResponseParser.unauthorizedResponse())
+      }
 
-      // if (user.client_key !== decrypted.data.client_key) {
-      //   console.log("client_key not matched") //eslint-disable-line
-      //   return ctx.response
-      //     .status(401)
-      //     .send(ResponseParser.unauthorizedResponse())
-      // }
+      if (!checkDate(decrypted.data.date)) {
+        console.log("decrypted date expired") //eslint-disable-line
+        return ctx.response
+          .status(401)
+          .send(ResponseParser.unauthorizedResponse())
+      }
 
-      const user = await User.find(2)
+      if (user.client_key !== decrypted.data.client_key) {
+        console.log("client_key not matched") //eslint-disable-line
+        return ctx.response
+          .status(401)
+          .send(ResponseParser.unauthorizedResponse())
+      }
+
       ctx.authClient = user.toJSON()
 
       await next()

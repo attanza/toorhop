@@ -16,6 +16,7 @@ class UserSchema extends Schema {
       table.string("client_key")
       table.string("secret")
       table.string("callback_url")
+      table.string("dev_callback_url")
       table.boolean("is_active").default(0)
       table.timestamps()
     })

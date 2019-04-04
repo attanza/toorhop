@@ -7,7 +7,8 @@ const {
   MidtransCore,
   IsMidtransSign,
   GetMidtransToken,
-  ErrorLog
+  ErrorLog,
+  IsDev
 } = use("App/Helpers")
 const { TransactionLog, ChargeLogTrait } = use("App/Traits")
 const { validate } = use("Validator")
@@ -155,7 +156,7 @@ class MidtransController {
   async notificationHandle({ request, response }) {
     try {
       const receivedJson = request.post()
-      if (Env.get("NODE_ENV") === "production" && !IsMidtransSign(request)) {
+      if (!IsDev(request) && !IsMidtransSign(request)) {
         console.log("notification not authorized")
         return response.status(401).send(ResponseParser.unauthorizedResponse())
       }
@@ -163,9 +164,14 @@ class MidtransController {
       await TransactionLog(request)
       // Send Callback
       const user = await ChargeLogTrait.getUser(receivedJson.order_id)
-      if (user && user.callback_url) {
-        console.log(`Sending notification to ${user.callback_url}`)
-        axios.post(user.callback_url, receivedJson)
+      if (user) {
+        if (!IsDev(request) && user.callback_url) {
+          console.log(`Sending notification to ${user.callback_url}`)
+          axios.post(user.callback_url, receivedJson)
+        } else {
+          console.log(`Sending notification to ${user.dev_callback_url}`)
+          axios.post(user.dev_callback_url, receivedJson)
+        }
       }
       return response.status(200).send(receivedJson)
     } catch (e) {
