@@ -1,6 +1,6 @@
 "use strict"
 
-const { ResponseParser } = use("App/Helpers")
+const { ResponseParser, IsDev } = use("App/Helpers")
 const User = use("App/Models/User")
 const moment = use("moment")
 const jwt = require("jsonwebtoken")
@@ -12,7 +12,7 @@ class Client {
         const user = await User.find(2)
         ctx.authClient = user.toJSON()
 
-        await next()
+        return await next()
       }
       const client_key = ctx.request.header("x-toorhop-key")
       const date = ctx.request.header("x-toorhop-date")
