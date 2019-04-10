@@ -72,7 +72,15 @@ class MidtransController {
           break
 
         case "refund":
-          result = await core.transaction.refund(order_id)
+          {
+            const { order_id, amount, reason, refund_key } = request.post()
+            let parameter = {
+              amount,
+              reason,
+              refund_key
+            }
+            result = await core.transaction.refund(order_id, parameter)
+          }
           break
 
         case "token": {

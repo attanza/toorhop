@@ -14,7 +14,7 @@ module.exports = request => {
     })
   } else {
     core = new midtransClient.CoreApi({
-      isProduction: false,
+      isProduction: true,
       serverKey: Env.get("MIDTRANS_SERVER_KEY"),
       clientKey: Env.get("MIDTRANS_CLIENT_KEY")
     })
