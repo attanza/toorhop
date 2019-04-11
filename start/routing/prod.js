@@ -9,6 +9,10 @@ Route.group(() => {
     "midtrans-notification-handler",
     "MidtransController.notificationHandle"
   )
+
+  Route.post("token/create", "ClientController.createToken").validator(
+    "CreateToken"
+  )
 })
   .prefix("api/v1")
   .formats(["json"])
