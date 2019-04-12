@@ -8,12 +8,12 @@ const Env = use("Env")
 class Client {
   async handle(ctx, next) {
     try {
-      if (IsDev(ctx.request)) {
-        const user = await User.find(2)
-        ctx.authClient = user.toJSON()
+      // if (IsDev(ctx.request)) {
+      //   const user = await User.find(2)
+      //   ctx.authClient = user.toJSON()
 
-        return await next()
-      }
+      //   return await next()
+      // }
       const client_key = ctx.request.header("x-toorhop-key")
       const date = ctx.request.header("x-toorhop-date")
       const token = ctx.request.header("x-toorhop-token")
@@ -102,7 +102,7 @@ module.exports = Client
 
 function checkDate(dateData) {
   const expiry = Env.get("CLIENT_TOKEN_EXPIRATION")
-  const now = moment()
+  const now = moment().utc()
   const dateAdded = moment.unix(dateData).add(expiry, "m")
 
   if (now > dateAdded) return false
