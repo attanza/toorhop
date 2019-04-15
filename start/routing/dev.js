@@ -13,6 +13,10 @@ Route.group(() => {
   Route.post("token/create", "ClientController.createToken").validator(
     "CreateToken"
   )
+
+  Route.post("snap-token", "MidtransSnapController.getToken").validator(
+    "GetSnapToken"
+  )
 })
   .prefix("api/dev-v1")
   .formats(["json"])

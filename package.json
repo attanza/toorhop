@@ -37,7 +37,7 @@
     "axios": "^0.18.0",
     "change-case": "^3.1.0",
     "laravel-mix": "^4.0.14",
-    "midtrans-client": "^1.0.2",
+    "midtrans-client": "^1.0.3",
     "mysql": "^2.16.0",
     "randomstring": "^1.1.5"
   },

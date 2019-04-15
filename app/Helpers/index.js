@@ -7,6 +7,7 @@ const MidtransCore = require("./MidtransCore")
 const IsMidtransSign = require("./IsMidtransSign")
 const fakeResponse = require("./fakeResponse")
 const GetMidtransToken = require("./GetMidtransToken")
+const GetMidtransKeys = require("./GetMidtransKeys")
 
 module.exports = {
   ResponseParser,
@@ -17,5 +18,6 @@ module.exports = {
   MidtransCore,
   IsMidtransSign,
   fakeResponse,
-  GetMidtransToken
+  GetMidtransToken,
+  GetMidtransKeys
 }
