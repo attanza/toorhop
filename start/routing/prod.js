@@ -27,6 +27,10 @@ Route.group(() => {
   Route.post("midtrans-charge", "MidtransController.charge").validator(
     "MidtransCharge"
   )
+
+  Route.post("snap-token", "MidtransSnapController.getToken").validator(
+    "GetSnapToken"
+  )
 })
   .prefix("api/v1")
   .middleware("client")

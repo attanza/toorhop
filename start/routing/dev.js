@@ -13,10 +13,6 @@ Route.group(() => {
   Route.post("token/create", "ClientController.createToken").validator(
     "CreateToken"
   )
-
-  Route.post("snap-token", "MidtransSnapController.getToken").validator(
-    "GetSnapToken"
-  )
 })
   .prefix("api/dev-v1")
   .formats(["json"])
@@ -31,6 +27,10 @@ Route.group(() => {
   Route.post("midtrans/:method", "MidtransController.index")
   Route.post("midtrans-charge", "MidtransController.charge").validator(
     "MidtransCharge"
+  )
+
+  Route.post("snap-token", "MidtransSnapController.getToken").validator(
+    "GetSnapToken"
   )
 })
   .prefix("api/dev-v1")
