@@ -175,10 +175,10 @@ class MidtransController {
       if (user) {
         if (!IsDev(request) && user.callback_url) {
           console.log(`Sending notification to ${user.callback_url}`)
-          axios.post(user.callback_url, receivedJson)
+          await axios.post(user.callback_url, receivedJson)
         } else {
           console.log(`Sending notification to ${user.dev_callback_url}`)
-          axios.post(user.dev_callback_url, receivedJson)
+          await axios.post(user.dev_callback_url, receivedJson)
         }
       }
       return response.status(200).send(receivedJson)
