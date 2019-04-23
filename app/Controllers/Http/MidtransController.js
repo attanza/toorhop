@@ -172,6 +172,7 @@ class MidtransController {
       await TransactionLog(request)
       // Send Callback
       const user = await ChargeLogTrait.getUser(receivedJson.order_id)
+      console.log("user", user)
       if (user) {
         if (!IsDev(request) && user.callback_url) {
           console.log(`Sending notification to ${user.callback_url}`)
