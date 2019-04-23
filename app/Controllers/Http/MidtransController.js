@@ -27,6 +27,9 @@ const tokenRules = {
 }
 const ccRules = { token_id: "required" }
 
+const callback_url = "https://jobs.toorhop.com/midtrans/production/"
+const dev_callback_url = "https://jobs.toorhop.com/midtrans/development/"
+
 class MidtransController {
   async index({ request, response }) {
     try {
@@ -160,20 +163,6 @@ class MidtransController {
     }
   }
 
-  async postCallback({ request, response, authClient }) {
-    try {
-      const { order_id } = request.post()
-      await TransactionLog(request)
-      await ChargeLogTrait.store({
-        user_id: authClient.id,
-        order_id
-      })
-    } catch (e) {
-      const error = ErrorLog(request, e)
-      return response.status(error.status).send({ meta: error.meta })
-    }
-  }
-
   async notificationHandle({ request, response }) {
     try {
       const receivedJson = request.post()
@@ -184,16 +173,12 @@ class MidtransController {
       console.log("receivedJson", receivedJson)
       await TransactionLog(request)
       // Send Callback
-      const user = await ChargeLogTrait.getUser(receivedJson.order_id)
-      console.log("user", user)
-      if (user) {
-        if (!IsDev(request) && user.callback_url) {
-          console.log(`Sending notification to ${user.callback_url}`)
-          await axios.post(user.callback_url, receivedJson)
-        } else {
-          console.log(`Sending notification to ${user.dev_callback_url}`)
-          await axios.post(user.dev_callback_url, receivedJson)
-        }
+      if (!IsDev(request)) {
+        console.log(`Sending notification to ${callback_url}`)
+        await axios.post(callback_url, receivedJson)
+      } else {
+        console.log(`Sending notification to ${dev_callback_url}`)
+        await axios.post(dev_callback_url, receivedJson)
       }
       return response.status(200).send(receivedJson)
     } catch (e) {
