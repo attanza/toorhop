@@ -28,6 +28,8 @@ Route.group(() => {
     "MidtransCharge"
   )
 
+  Route.post("midtrans-callback", "MidtransController.postCallback")
+
   Route.post("snap-token", "MidtransSnapController.getToken").validator(
     "GetSnapToken"
   )

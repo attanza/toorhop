@@ -12,7 +12,6 @@ const {
 } = use("App/Helpers")
 const { TransactionLog, ChargeLogTrait } = use("App/Traits")
 const { validate } = use("Validator")
-const Env = use("Env")
 const axios = require("axios")
 let isValid = false
 let validationErrors = null
@@ -158,6 +157,20 @@ class MidtransController {
       return response
         .status(400)
         .send(ResponseParser.errorResponse("Operation failed", e.ApiResponse))
+    }
+  }
+
+  async postCallback({ request, response, authClient }) {
+    try {
+      const { order_id } = request.post()
+      await TransactionLog(request)
+      await ChargeLogTrait.store({
+        user_id: authClient.id,
+        order_id
+      })
+    } catch (e) {
+      const error = ErrorLog(request, e)
+      return response.status(error.status).send({ meta: error.meta })
     }
   }
 
