@@ -6,15 +6,17 @@ const { GetMidtransKeys, ResponseParser } = use("App/Helpers")
 class MidtransSnapController {
   async getToken({ request, response }) {
     try {
-      let snap = new midtransClient.Snap(GetMidtransKeys(request))
-      let transaction_details = request.post()
+      const snap = new midtransClient.Snap(GetMidtransKeys(request))
+      const { customer_details, item_details, order_id } = request.post()
+      let transaction_details = {}
       let gross_amount = 0
-      transaction_details.item_details.map(
-        item => (gross_amount += item.price * item.quantity)
-      )
+      item_details.map(item => (gross_amount += item.price * item.quantity))
       transaction_details.gross_amount = gross_amount
+      transaction_details.order_id = order_id
       const transactionToken = await snap.createTransactionToken({
-        transaction_details
+        transaction_details,
+        customer_details,
+        item_details
       })
       return response
         .status(200)
